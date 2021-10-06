@@ -1,3 +1,7 @@
 package com.example.githubuser.datasource.remote
 
-interface RemoteDataSource
+import com.example.githubuser.datasource.remote.response.UserResponse
+
+interface RemoteDataSource {
+    fun getAllUsers(): RemoteSealed<List<UserResponse>>
+}
