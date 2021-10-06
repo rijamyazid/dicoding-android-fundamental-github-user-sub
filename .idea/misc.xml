@@ -3,10 +3,11 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/Algoritma/Android/_Dicoding/DicodingFundamentalAndroid_GitHubUser/app/src/main/res/layout/activity_main.xml" value="0.11820652173913043" />
+        <entry key="..\:/Algoritma/Android/_Dicoding/DicodingFundamentalAndroid_GitHubUser/app/src/main/res/drawable/ic_account_box_24.xml" value="0.23692307692307693" />
+        <entry key="..\:/Algoritma/Android/_Dicoding/DicodingFundamentalAndroid_GitHubUser/app/src/main/res/layout/activity_main.xml" value="0.25" />
         <entry key="..\:/Algoritma/Android/_Dicoding/DicodingFundamentalAndroid_GitHubUser/app/src/main/res/layout/fragment_detail.xml" value="0.11820652173913043" />
-        <entry key="..\:/Algoritma/Android/_Dicoding/DicodingFundamentalAndroid_GitHubUser/app/src/main/res/layout/fragment_home.xml" value="0.10916919959473151" />
-        <entry key="..\:/Algoritma/Android/_Dicoding/DicodingFundamentalAndroid_GitHubUser/app/src/main/res/layout/item_holder_user.xml" value="0.10916919959473151" />
+        <entry key="..\:/Algoritma/Android/_Dicoding/DicodingFundamentalAndroid_GitHubUser/app/src/main/res/layout/fragment_home.xml" value="0.25" />
+        <entry key="..\:/Algoritma/Android/_Dicoding/DicodingFundamentalAndroid_GitHubUser/app/src/main/res/layout/item_holder_user.xml" value="0.3148148148148148" />
       </map>
     </option>
   </component>
