@@ -13,11 +13,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.example.githubuser.R
 import com.example.githubuser.databinding.FragmentHomeBinding
-import com.example.githubuser.databinding.ItemHolderUserBinding
 import com.example.githubuser.datasource.remote.RemoteSealed
 import com.example.githubuser.datasource.remote.response.UserResponse
 import com.example.githubuser.util.Helpers
-import com.example.githubuser.view.adapter.MainAdapter
+import com.example.githubuser.view.adapter.HomeAdapter
 import com.example.githubuser.view.vm.HomeViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -27,7 +26,7 @@ class HomeFragment : Fragment() {
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
     private val viewModel: HomeViewModel by viewModels()
-    private var holderBinding: ItemHolderUserBinding? = null
+    private lateinit var homeAdapter: HomeAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -40,36 +39,21 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val madapter = object : MainAdapter() {
-            override fun onBindData(position: Int, viewHolder: UserViewHolder, data: Any) {
-                with(viewHolder) {
-                    binding.tvNameItem.text = (data as UserResponse).name
-                    binding.tvCompanyItem.text = data.company
-                    binding.tvLocationItem.text = data.location
-                    Glide.with(view.context)
-                        .load(
-                            ResourcesCompat.getDrawable(
-                                resources,
-                                Helpers.getDrawableFromStr(data.avatar)
-                                    ?: R.drawable.ic_account_circle_24,
-                                null
-                            )
-                        )
-                        .circleCrop()
-                        .into(binding.imgUserItem)
-                }
+        homeAdapter = object : HomeAdapter() {
+            override fun onBindData(viewHolder: UserViewHolder, data: UserResponse) {
+                bindToRow(view, viewHolder, data)
             }
         }
 
         binding.rvUsers.apply {
             layoutManager = LinearLayoutManager(context)
-            adapter = madapter
+            adapter = homeAdapter
         }
 
         viewModel.getAllUsers().observe(viewLifecycleOwner, {
             when (it) {
                 is RemoteSealed.Value -> {
-                    madapter.setItems(it.data as ArrayList<Any>)
+                    homeAdapter.setItems(it.data as ArrayList<UserResponse>)
                     Log.d("TESTING_PURPOSE", it.data.toString())
                 }
                 is RemoteSealed.Error -> {
@@ -78,17 +62,31 @@ class HomeFragment : Fragment() {
             }
         })
 
-        binding.btnDetail.setOnClickListener {
-            val userData = UserResponse(
-                1, 1, "RMY", "ABC", "HAHA", "d", 1, "hai"
-            )
-            findNavController().navigate(
-                HomeFragmentDirections.actionHomeFragmentToDetailFragment(
-                    userData
-                )
-            )
-        }
+    }
 
+    private fun bindToRow(view: View, viewHolder: HomeAdapter.UserViewHolder, data: UserResponse) {
+        with(viewHolder) {
+            binding.tvNameItem.text = data.name
+            binding.tvCompanyItem.text = data.company
+            binding.tvLocationItem.text = data.location
+            Glide.with(view.context)
+                .load(
+                    ResourcesCompat.getDrawable(
+                        resources,
+                        Helpers.getDrawableFromStr(data.avatar)
+                            ?: R.drawable.ic_account_circle_24,
+                        null
+                    )
+                )
+                .circleCrop()
+                .into(binding.imgUserItem)
+
+            binding.root.setOnClickListener {
+                findNavController().navigate(
+                    HomeFragmentDirections.actionHomeFragmentToDetailFragment(data)
+                )
+            }
+        }
     }
 
 }

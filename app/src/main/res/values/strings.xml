@@ -10,4 +10,8 @@
     <string name="user_name_item">%1$s</string>
     <string name="user_company_item">%1$s</string>
     <string name="user_username_item">%1$s</string>
+    <string name="following_title">Following</string>
+    <string name="followers_title">Followers</string>
+    <string name="repository_title">Repository</string>
+    <string name="company_title">Company</string>
 </resources>
