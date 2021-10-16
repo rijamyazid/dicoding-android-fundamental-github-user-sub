@@ -2,18 +2,21 @@ package com.example.githubuser
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import com.example.githubuser.datasource.remote.response.MainResponse
-import com.google.gson.Gson
+import com.example.githubuser.databinding.ActivityMainBinding
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
+
+    private var _binding: ActivityMainBinding? = null
+    private val binding get() = _binding!!
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-        val users = Gson().fromJson(
-            application.assets.open("githubuser.json").bufferedReader(),
-            MainResponse::class.java
-        )
+
+        _binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
+        setSupportActionBar(binding.toolbarDefault)
     }
 }

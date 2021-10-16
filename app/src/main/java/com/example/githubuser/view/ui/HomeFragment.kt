@@ -2,9 +2,7 @@ package com.example.githubuser.view.ui
 
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -13,8 +11,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.example.githubuser.R
 import com.example.githubuser.databinding.FragmentHomeBinding
-import com.example.githubuser.datasource.remote.RemoteSealed
-import com.example.githubuser.datasource.remote.response.UserResponse
+import com.example.githubuser.datasource.local.LocalSealed
+import com.example.githubuser.datasource.local.model.UserModel
 import com.example.githubuser.util.Helpers
 import com.example.githubuser.view.adapter.HomeAdapter
 import com.example.githubuser.view.vm.HomeViewModel
@@ -28,6 +26,11 @@ class HomeFragment : Fragment() {
     private val viewModel: HomeViewModel by viewModels()
     private lateinit var homeAdapter: HomeAdapter
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -40,7 +43,7 @@ class HomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         homeAdapter = object : HomeAdapter() {
-            override fun onBindData(viewHolder: UserViewHolder, data: UserResponse) {
+            override fun onBindData(viewHolder: UserViewHolder, data: UserModel) {
                 bindToRow(view, viewHolder, data)
             }
         }
@@ -52,11 +55,11 @@ class HomeFragment : Fragment() {
 
         viewModel.getAllUsers().observe(viewLifecycleOwner, {
             when (it) {
-                is RemoteSealed.Value -> {
-                    homeAdapter.setItems(it.data as ArrayList<UserResponse>)
+                is LocalSealed.Value -> {
+                    homeAdapter.setItems(it.data as ArrayList<UserModel>)
                     Log.d("TESTING_PURPOSE", it.data.toString())
                 }
-                is RemoteSealed.Error -> {
+                is LocalSealed.Error -> {
                     Log.d("TESTING_PURPOSE", it.message ?: "Terjadi error")
                 }
             }
@@ -64,7 +67,7 @@ class HomeFragment : Fragment() {
 
     }
 
-    private fun bindToRow(view: View, viewHolder: HomeAdapter.UserViewHolder, data: UserResponse) {
+    private fun bindToRow(view: View, viewHolder: HomeAdapter.UserViewHolder, data: UserModel) {
         with(viewHolder) {
             binding.tvNameItem.text = data.name
             binding.tvCompanyItem.text = data.company
@@ -87,6 +90,12 @@ class HomeFragment : Fragment() {
                 )
             }
         }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.menu_appbar, menu)
+        val itemShare = menu.findItem(R.id.appbar_share)
+        itemShare.isVisible = false
     }
 
 }

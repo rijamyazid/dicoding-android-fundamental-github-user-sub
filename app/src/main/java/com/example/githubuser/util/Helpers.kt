@@ -1,6 +1,8 @@
 package com.example.githubuser.util
 
 import com.example.githubuser.R
+import com.example.githubuser.datasource.local.model.UserModel
+import com.example.githubuser.datasource.remote.response.UserResponse
 
 object Helpers {
 
@@ -18,5 +20,18 @@ object Helpers {
     )
 
     fun getDrawableFromStr(str: String): Int? = imgPair()[str]
+
+    fun List<UserResponse>.convertToDomain() = this.map { it.convertToDomain() }
+
+    private fun UserResponse.convertToDomain() = UserModel(
+        name = this.name,
+        username = this.username,
+        company = this.company,
+        avatar = this.avatar,
+        follower = this.follower,
+        following = this.following,
+        repository = this.repository,
+        location = this.location
+    )
 
 }

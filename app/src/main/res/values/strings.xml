@@ -14,4 +14,6 @@
     <string name="followers_title">Followers</string>
     <string name="repository_title">Repository</string>
     <string name="company_title">Company</string>
+    <string name="appbar_switch">Switch</string>
+    <string name="appbar_share">Share</string>
 </resources>

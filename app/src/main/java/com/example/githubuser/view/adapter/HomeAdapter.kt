@@ -4,19 +4,19 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.githubuser.databinding.ItemHolderUserBinding
-import com.example.githubuser.datasource.remote.response.UserResponse
+import com.example.githubuser.datasource.local.model.UserModel
 
 abstract class HomeAdapter : RecyclerView.Adapter<HomeAdapter.UserViewHolder>() {
 
-    private val itemList = ArrayList<UserResponse>()
+    private val itemList = ArrayList<UserModel>()
 
-    fun setItems(itemList: ArrayList<UserResponse>) {
+    fun setItems(itemList: ArrayList<UserModel>) {
         this.itemList.clear()
         this.itemList.addAll(itemList)
         notifyDataSetChanged()
     }
 
-    abstract fun onBindData(viewHolder: UserViewHolder, data: UserResponse)
+    abstract fun onBindData(viewHolder: UserViewHolder, data: UserModel)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UserViewHolder {
         val binding = ItemHolderUserBinding

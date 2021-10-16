@@ -21,6 +21,6 @@
         tools:layout="@layout/fragment_detail">
         <argument
             android:name="userDetail"
-            app:argType="com.example.githubuser.datasource.remote.response.UserResponse" />
+            app:argType="com.example.githubuser.datasource.local.model.UserModel" />
     </fragment>
 </navigation>
