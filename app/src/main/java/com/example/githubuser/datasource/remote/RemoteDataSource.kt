@@ -1,7 +1,7 @@
 package com.example.githubuser.datasource.remote
 
-import com.example.githubuser.datasource.remote.response.UserResponse
+import com.example.githubuser.datasource.local.model.UserModel
 
 interface RemoteDataSource {
-    fun getAllUsers(): RemoteSealed<List<UserResponse>>
+    suspend fun getAllUsers(): RemoteSealed<List<UserModel>>
 }

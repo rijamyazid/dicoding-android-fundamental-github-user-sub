@@ -3,15 +3,14 @@ package com.example.githubuser.view.ui
 import android.content.Intent
 import android.os.Bundle
 import android.view.*
-import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import com.example.githubuser.R
 import com.example.githubuser.databinding.FragmentDetailBinding
 import com.example.githubuser.datasource.local.model.UserModel
-import com.example.githubuser.util.Helpers
 import com.example.githubuser.view.vm.DetailViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -53,13 +52,10 @@ class DetailFragment : Fragment() {
             binding.tvFollowingContent.text = it.following.toString()
 
             Glide.with(view.context)
-                .load(
-                    ResourcesCompat.getDrawable(
-                        resources,
-                        Helpers.getDrawableFromStr(it.avatar)
-                            ?: R.drawable.ic_account_circle_24,
-                        null
-                    )
+                .load(it.avatar)
+                .apply(
+                    RequestOptions.placeholderOf(R.drawable.ic_loading)
+                        .error(R.drawable.ic_error)
                 )
                 .circleCrop()
                 .into(binding.imgUser)

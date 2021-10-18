@@ -18,11 +18,11 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:listitem="@layout/item_holder_user" />
 
-    <Button
-        android:id="@+id/btn_detail"
+    <ProgressBar
+        android:id="@+id/pb_home"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Button"
+        style="?android:attr/progressBarStyle"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

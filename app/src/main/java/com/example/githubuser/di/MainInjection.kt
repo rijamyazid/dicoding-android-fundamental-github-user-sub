@@ -1,6 +1,5 @@
 package com.example.githubuser.di
 
-import android.content.Context
 import com.example.githubuser.datasource.remote.RemoteDataSource
 import com.example.githubuser.datasource.remote.RemoteDataSourceImpl
 import com.example.githubuser.datasource.repository.MainRepository
@@ -9,7 +8,6 @@ import com.google.gson.Gson
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 
 @Module
@@ -20,9 +18,9 @@ object MainInjection {
     fun provideGson(): Gson = Gson()
 
     @Provides
-    fun provideRemoteDataSource(@ApplicationContext context: Context, gson: Gson)
+    fun provideRemoteDataSource()
             : RemoteDataSource {
-        return RemoteDataSourceImpl(context, gson)
+        return RemoteDataSourceImpl()
     }
 
     @Provides

@@ -2,7 +2,7 @@ package com.example.githubuser.util
 
 import com.example.githubuser.R
 import com.example.githubuser.datasource.local.model.UserModel
-import com.example.githubuser.datasource.remote.response.UserResponse
+import com.example.githubuser.datasource.remote.response.UserDetailResponse
 
 object Helpers {
 
@@ -22,18 +22,26 @@ object Helpers {
         "@drawable/ic_account_circle_24" to R.drawable.ic_account_circle_24
     )
 
-    fun getDrawableFromStr(str: String): Int? = imgPair()[str]
+    fun List<UserDetailResponse>.convertToDomain() = this.map { it.convertToDomain() }
 
-    fun List<UserResponse>.convertToDomain() = this.map { it.convertToDomain() }
-
-    fun UserResponse.convertToDomain() = UserModel(
-        name = this.name,
-        username = this.username,
-        company = this.company,
-        avatar = this.avatar,
-        follower = this.follower,
-        following = this.following,
-        repository = this.repository,
-        location = this.location
+    fun UserDetailResponse.convertToDomain() = UserModel(
+        avatar = this.avatarUrl ?: "null",
+        name = this.name ?: "null",
+        username = this.login ?: "null",
+        location = this.location ?: "null",
+        company = this.company ?: "null",
+        repository = this.publicRepos ?: -1,
+        follower = this.followers ?: -1,
+        following = this.following ?: -1
     )
+
+    fun UserModel.validateNull(): Boolean {
+        return when {
+            avatar == "null" -> true
+            name == "null" -> true
+            location == "null" -> true
+            company == "null" -> true
+            else -> false
+        }
+    }
 }

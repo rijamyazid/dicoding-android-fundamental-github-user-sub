@@ -3,17 +3,16 @@ package com.example.githubuser.view.ui
 import android.os.Bundle
 import android.util.Log
 import android.view.*
-import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import com.example.githubuser.R
 import com.example.githubuser.databinding.FragmentHomeBinding
 import com.example.githubuser.datasource.local.LocalSealed
 import com.example.githubuser.datasource.local.model.UserModel
-import com.example.githubuser.util.Helpers
 import com.example.githubuser.view.adapter.HomeAdapter
 import com.example.githubuser.view.vm.HomeViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -53,13 +52,18 @@ class HomeFragment : Fragment() {
             adapter = homeAdapter
         }
 
-        viewModel.getAllUsers().observe(viewLifecycleOwner, {
+        viewModel.getUsers.observe(viewLifecycleOwner, {
             when (it) {
+                is LocalSealed.Loading -> {
+                    binding.pbHome.visibility = View.VISIBLE
+                }
                 is LocalSealed.Value -> {
                     homeAdapter.setItems(it.data as ArrayList<UserModel>)
+                    binding.pbHome.visibility = View.GONE
                     Log.d("TESTING_PURPOSE", it.data.toString())
                 }
                 is LocalSealed.Error -> {
+                    binding.pbHome.visibility = View.GONE
                     Log.d("TESTING_PURPOSE", it.message ?: "Terjadi error")
                 }
             }
@@ -73,13 +77,10 @@ class HomeFragment : Fragment() {
             binding.tvCompanyItem.text = data.company
             binding.tvLocationItem.text = data.location
             Glide.with(view.context)
-                .load(
-                    ResourcesCompat.getDrawable(
-                        resources,
-                        Helpers.getDrawableFromStr(data.avatar)
-                            ?: R.drawable.ic_account_circle_24,
-                        null
-                    )
+                .load(data.avatar)
+                .apply(
+                    RequestOptions.placeholderOf(R.drawable.ic_loading)
+                        .error(R.drawable.ic_error)
                 )
                 .circleCrop()
                 .into(binding.imgUserItem)

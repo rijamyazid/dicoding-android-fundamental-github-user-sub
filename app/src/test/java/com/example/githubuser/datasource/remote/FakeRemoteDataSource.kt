@@ -1,6 +1,5 @@
 package com.example.githubuser.datasource.remote
 
-import com.example.githubuser.datasource.remote.response.UserResponse
 import com.example.githubuser.util.Helpers.CODE_EMPTY
 
 class FakeRemoteDataSource(

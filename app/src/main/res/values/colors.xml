@@ -17,4 +17,5 @@
     <color name="indigo_a200_dark">#0043ca</color>
     <color name="white_grey_50">#fafafa</color>
     <color name="white_grey_50_dark">#c7c7c7</color>
+    <color name="placeholder">#6FB6B6B6</color>
 </resources>
