@@ -6,6 +6,8 @@ import com.example.githubuser.datasource.remote.response.UserResponse
 
 object Helpers {
 
+    const val CODE_EMPTY = "EMPTY"
+
     private fun imgPair(): Map<String, Int> = mapOf(
         "@drawable/user1" to R.drawable.user1,
         "@drawable/user2" to R.drawable.user2,
@@ -17,13 +19,14 @@ object Helpers {
         "@drawable/user8" to R.drawable.user8,
         "@drawable/user9" to R.drawable.user9,
         "@drawable/user10" to R.drawable.user10,
+        "@drawable/ic_account_circle_24" to R.drawable.ic_account_circle_24
     )
 
     fun getDrawableFromStr(str: String): Int? = imgPair()[str]
 
     fun List<UserResponse>.convertToDomain() = this.map { it.convertToDomain() }
 
-    private fun UserResponse.convertToDomain() = UserModel(
+    fun UserResponse.convertToDomain() = UserModel(
         name = this.name,
         username = this.username,
         company = this.company,
@@ -33,5 +36,4 @@ object Helpers {
         repository = this.repository,
         location = this.location
     )
-
 }
