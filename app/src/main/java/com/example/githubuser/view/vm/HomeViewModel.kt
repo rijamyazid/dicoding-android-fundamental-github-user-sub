@@ -12,8 +12,8 @@ class HomeViewModel
 @Inject constructor(private val repository: MainRepository) : ViewModel() {
 
     fun refresh(query: String? = this.query.value) {
-        _dataUsers = repository.getUsers()
-        this.query.value = query
+        _dataUsers = repository.getUsers().distinctUntilChanged()
+        this._query.postValue(query)
     }
 
     private var _dataUsers = getUsers().distinctUntilChanged()
@@ -22,9 +22,10 @@ class HomeViewModel
         return repository.getUsers()
     }
 
-    val query = MutableLiveData<String>()
+    private var _query = MutableLiveData<String>()
+    val query get() = _query
     fun setQuery(query: String?) {
-        this.query.postValue(query)
+        this._query.postValue(query)
     }
 
     private var _dataUsersByQuery = query.switchMap { getUsersByQuery(it) }.distinctUntilChanged()
