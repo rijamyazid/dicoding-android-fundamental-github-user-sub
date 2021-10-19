@@ -21,9 +21,9 @@ class RemoteDataSourceImpl
                 }
                 else -> {
                     for (user in getUsers) {
-                        if (user.login.isNullOrEmpty()) RemoteSealed.Error(CODE_EMPTY)
+                        if (user.login.isNullOrEmpty()) continue
                         val userDetailResponse =
-                            ApiConfig.getApiService().getUserDetail(user.login!!)
+                            ApiConfig.getApiService().getUserDetail(user.login)
                         if (!userDetailResponse.convertToDomain().validateNull())
                             userModel.add(userDetailResponse.convertToDomain())
                         if (userModel.size == 10) break
@@ -37,10 +37,10 @@ class RemoteDataSourceImpl
         }
     }
 
-    override suspend fun getUsersByQuery(query: String): RemoteSealed<List<UserModel>> {
+    override suspend fun getUsersByQuery(query: String?): RemoteSealed<List<UserModel>> {
         try {
             val userModel = ArrayList<UserModel>()
-            if (query.isEmpty()) {
+            if (query.isNullOrEmpty()) {
                 return getUsers()
             } else {
                 val getUsers = ApiConfig.getApiService().getUsersByQuery(query)

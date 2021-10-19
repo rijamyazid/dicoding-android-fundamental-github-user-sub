@@ -23,16 +23,17 @@ class MainRepositoryImpl
         }
     }
 
-    override fun getUsersByQuery(query: String): LiveData<LocalSealed<List<UserModel>>> = liveData {
-        emit(LocalSealed.Loading(true))
-        when (val response = remoteDataSource.getUsersByQuery(query)) {
-            is RemoteSealed.Value -> {
-                emit(LocalSealed.Value(response.data))
-            }
-            is RemoteSealed.Error -> {
-                emit(LocalSealed.Error(response.message))
+    override fun getUsersByQuery(query: String?): LiveData<LocalSealed<List<UserModel>>> =
+        liveData {
+            emit(LocalSealed.Loading(true))
+            when (val response = remoteDataSource.getUsersByQuery(query)) {
+                is RemoteSealed.Value -> {
+                    emit(LocalSealed.Value(response.data))
+                }
+                is RemoteSealed.Error -> {
+                    emit(LocalSealed.Error(response.message))
+                }
             }
         }
-    }
 
 }

@@ -2,8 +2,8 @@ package com.example.githubuser.view.ui
 
 import android.app.SearchManager
 import android.content.Context
+import android.graphics.Color
 import android.os.Bundle
-import android.util.Log
 import android.view.*
 import android.widget.SearchView
 import androidx.fragment.app.Fragment
@@ -28,6 +28,7 @@ class HomeFragment : Fragment() {
     private val binding get() = _binding!!
     private val viewModel: HomeViewModel by viewModels()
     private lateinit var homeAdapter: HomeAdapter
+    private lateinit var searchView: SearchView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -56,18 +57,23 @@ class HomeFragment : Fragment() {
             adapter = homeAdapter
         }
 
+        binding.swipeRefreshHome.apply {
+            setOnRefreshListener {
+                viewModel.refresh()
+                isRefreshing = false
+            }
+
+            setColorSchemeColors(Color.GREEN, Color.RED, Color.BLUE)
+        }
+
         if (viewModel.query.value.isNullOrEmpty()) {
-            Log.d("TESTING_PURPOSE", "1")
             viewModel.dataUsers.observe(viewLifecycleOwner, {
                 universalObserver(it)
             })
-        } else {
-            Log.d("TESTING_PURPOSE", "2")
-            viewModel.dataUsersByQuery.observe(viewLifecycleOwner, {
-                universalObserver(it)
-            })
         }
-
+        viewModel.dataUsersByQuery.observe(viewLifecycleOwner, {
+            universalObserver(it)
+        })
     }
 
     private fun bindToRow(view: View, viewHolder: HomeAdapter.UserViewHolder, data: UserModel) {
@@ -99,25 +105,23 @@ class HomeFragment : Fragment() {
 
         val searchManager =
             requireActivity().getSystemService(Context.SEARCH_SERVICE) as SearchManager
-        val searchView = menu.findItem(R.id.appbar_search).actionView as SearchView
-        searchView.setSearchableInfo(searchManager.getSearchableInfo(requireActivity().componentName))
-        searchView.queryHint = resources.getString(R.string.search_hint)
-        searchView.setQuery(viewModel.query.value, false)
+        searchView = menu.findItem(R.id.appbar_search).actionView as SearchView
+        searchView.apply {
+            setSearchableInfo(searchManager.getSearchableInfo(requireActivity().componentName))
+            queryHint = resources.getString(R.string.search_hint)
+            setQuery(viewModel.query.value, false)
 
-        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-            override fun onQueryTextSubmit(query: String?): Boolean {
-                return false
-            }
+            setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+                override fun onQueryTextSubmit(query: String?): Boolean {
+                    return false
+                }
 
-            override fun onQueryTextChange(newText: String?): Boolean {
-                Log.d("TESTING_PURPOSE", "4")
-                viewModel.setQuery(newText ?: "")
-                viewModel.dataUsersByQuery.observe(viewLifecycleOwner, {
-                    universalObserver(it)
-                })
-                return true
-            }
-        })
+                override fun onQueryTextChange(newText: String?): Boolean {
+                    viewModel.setQuery(newText)
+                    return true
+                }
+            })
+        }
     }
 
     private fun universalObserver(observed: LocalSealed<List<UserModel>>) {
