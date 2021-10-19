@@ -18,6 +18,7 @@ import com.example.githubuser.datasource.local.LocalSealed
 import com.example.githubuser.datasource.local.model.UserModel
 import com.example.githubuser.view.adapter.HomeAdapter
 import com.example.githubuser.view.vm.HomeViewModel
+import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -101,22 +102,20 @@ class HomeFragment : Fragment() {
         val searchView = menu.findItem(R.id.appbar_search).actionView as SearchView
         searchView.setSearchableInfo(searchManager.getSearchableInfo(requireActivity().componentName))
         searchView.queryHint = resources.getString(R.string.search_hint)
-        searchView.post {
-            searchView.setQuery(viewModel.query.value, false)
-        }
+        searchView.setQuery(viewModel.query.value, false)
 
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
-                Log.d("TESTING_PURPOSE", "3")
-                viewModel.setQuery(query ?: " ")
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                Log.d("TESTING_PURPOSE", "4")
+                viewModel.setQuery(newText ?: "")
                 viewModel.dataUsersByQuery.observe(viewLifecycleOwner, {
                     universalObserver(it)
                 })
                 return true
-            }
-
-            override fun onQueryTextChange(newText: String?): Boolean {
-                return false
             }
         })
     }
@@ -133,6 +132,11 @@ class HomeFragment : Fragment() {
                 binding.pbHome.visibility = View.GONE
             }
             is LocalSealed.Error -> {
+                Snackbar.make(
+                    requireView(),
+                    "Oops, ada kesalahan teknis. Reason: ${observed.message}",
+                    Snackbar.LENGTH_LONG
+                ).show()
                 binding.rvUsers.visibility = View.VISIBLE
                 binding.pbHome.visibility = View.GONE
             }

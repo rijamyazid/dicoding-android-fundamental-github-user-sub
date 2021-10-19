@@ -6,7 +6,6 @@ import com.example.githubuser.datasource.remote.api.ApiConfig
 import com.example.githubuser.util.Helpers.CODE_EMPTY
 import com.example.githubuser.util.Helpers.convertToDomain
 import com.example.githubuser.util.Helpers.validateNull
-import retrofit2.HttpException
 import javax.inject.Inject
 
 class RemoteDataSourceImpl
@@ -32,31 +31,38 @@ class RemoteDataSourceImpl
                     RemoteSealed.Value(userModel)
                 }
             }
-        } catch (e: HttpException) {
-            Log.d("TESTING_PURPOSE", "Exception ${e.message}")
-            return RemoteSealed.Error(CODE_EMPTY)
         } catch (e: Throwable) {
             Log.d("TESTING_PURPOSE", "Exception ${e.message}")
-            return RemoteSealed.Error(CODE_EMPTY)
+            return RemoteSealed.Error(e.message)
         }
     }
 
     override suspend fun getUsersByQuery(query: String): RemoteSealed<List<UserModel>> {
-        val getUsers = ApiConfig.getApiService().getUsersByQuery(query)
-        val userModel = ArrayList<UserModel>()
-        return when {
-            getUsers.items.isEmpty() -> {
-                RemoteSealed.Error(CODE_EMPTY)
-            }
-            else -> {
-                for (user in getUsers.items) {
-                    if (user.login.isNullOrEmpty()) RemoteSealed.Error(CODE_EMPTY)
-                    val userDetailResponse = ApiConfig.getApiService().getUserDetail(user.login!!)
-                    userModel.add(userDetailResponse.convertToDomain())
-                    if (userModel.size == 10) break
+        try {
+            val userModel = ArrayList<UserModel>()
+            if (query.isEmpty()) {
+                return getUsers()
+            } else {
+                val getUsers = ApiConfig.getApiService().getUsersByQuery(query)
+                return when {
+                    getUsers.items.isEmpty() -> {
+                        RemoteSealed.Error(CODE_EMPTY)
+                    }
+                    else -> {
+                        for (user in getUsers.items) {
+                            if (user.login.isNullOrEmpty()) RemoteSealed.Error(CODE_EMPTY)
+                            val userDetailResponse =
+                                ApiConfig.getApiService().getUserDetail(user.login!!)
+                            userModel.add(userDetailResponse.convertToDomain())
+                            if (userModel.size == 10) break
+                        }
+                        RemoteSealed.Value(userModel)
+                    }
                 }
-                RemoteSealed.Value(userModel)
             }
+        } catch (e: Throwable) {
+            Log.d("TESTING_PURPOSE", "Exception ${e.message}")
+            return RemoteSealed.Error(e.message)
         }
     }
 }
