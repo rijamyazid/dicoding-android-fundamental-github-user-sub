@@ -64,6 +64,9 @@ class DetailFragment : Fragment() {
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.menu_appbar, menu)
+        val itemSearch = menu.findItem(R.id.appbar_search)
+        itemSearch.isVisible = false
+
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

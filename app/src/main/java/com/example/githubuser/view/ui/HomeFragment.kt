@@ -1,8 +1,11 @@
 package com.example.githubuser.view.ui
 
+import android.app.SearchManager
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.*
+import android.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -52,22 +55,17 @@ class HomeFragment : Fragment() {
             adapter = homeAdapter
         }
 
-        viewModel.getUsers.observe(viewLifecycleOwner, {
-            when (it) {
-                is LocalSealed.Loading -> {
-                    binding.pbHome.visibility = View.VISIBLE
-                }
-                is LocalSealed.Value -> {
-                    homeAdapter.setItems(it.data as ArrayList<UserModel>)
-                    binding.pbHome.visibility = View.GONE
-                    Log.d("TESTING_PURPOSE", it.data.toString())
-                }
-                is LocalSealed.Error -> {
-                    binding.pbHome.visibility = View.GONE
-                    Log.d("TESTING_PURPOSE", it.message ?: "Terjadi error")
-                }
-            }
-        })
+        if (viewModel.query.value.isNullOrEmpty()) {
+            Log.d("TESTING_PURPOSE", "1")
+            viewModel.dataUsers.observe(viewLifecycleOwner, {
+                universalObserver(it)
+            })
+        } else {
+            Log.d("TESTING_PURPOSE", "2")
+            viewModel.dataUsersByQuery.observe(viewLifecycleOwner, {
+                universalObserver(it)
+            })
+        }
 
     }
 
@@ -97,6 +95,48 @@ class HomeFragment : Fragment() {
         inflater.inflate(R.menu.menu_appbar, menu)
         val itemShare = menu.findItem(R.id.appbar_share)
         itemShare.isVisible = false
+
+        val searchManager =
+            requireActivity().getSystemService(Context.SEARCH_SERVICE) as SearchManager
+        val searchView = menu.findItem(R.id.appbar_search).actionView as SearchView
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(requireActivity().componentName))
+        searchView.queryHint = resources.getString(R.string.search_hint)
+        searchView.post {
+            searchView.setQuery(viewModel.query.value, false)
+        }
+
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                Log.d("TESTING_PURPOSE", "3")
+                viewModel.setQuery(query ?: " ")
+                viewModel.dataUsersByQuery.observe(viewLifecycleOwner, {
+                    universalObserver(it)
+                })
+                return true
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                return false
+            }
+        })
+    }
+
+    private fun universalObserver(observed: LocalSealed<List<UserModel>>) {
+        when (observed) {
+            is LocalSealed.Loading -> {
+                binding.pbHome.visibility = View.VISIBLE
+                binding.rvUsers.visibility = View.GONE
+            }
+            is LocalSealed.Value -> {
+                homeAdapter.setItems(observed.data as ArrayList<UserModel>)
+                binding.rvUsers.visibility = View.VISIBLE
+                binding.pbHome.visibility = View.GONE
+            }
+            is LocalSealed.Error -> {
+                binding.rvUsers.visibility = View.VISIBLE
+                binding.pbHome.visibility = View.GONE
+            }
+        }
     }
 
 }

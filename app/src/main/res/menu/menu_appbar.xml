@@ -3,8 +3,16 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
+        android:id="@+id/appbar_search"
+        android:icon="@drawable/ic_search_white_24dp"
+        android:title="@string/appbar_search"
+        app:actionViewClass="android.widget.SearchView"
+        app:showAsAction="always" />
+
+    <item
         android:id="@+id/appbar_share"
-        android:icon="@drawable/ic_share_24_white"
+        android:icon="@drawable/ic_share_24"
         android:title="@string/appbar_share"
+        app:iconTint="?attr/colorOnPrimary"
         app:showAsAction="ifRoom" />
 </menu>

@@ -16,4 +16,6 @@
     <string name="company_title">Company</string>
     <string name="appbar_switch">Switch</string>
     <string name="appbar_share">Share</string>
+    <string name="appbar_search">Cari</string>
+    <string name="search_hint">Nama Pengguna</string>
 </resources>

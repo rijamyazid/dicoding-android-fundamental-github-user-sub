@@ -2,13 +2,13 @@
     <!-- Base application theme. -->
     <style name="Theme.GitHubUser" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/grey_600</item>
+        <item name="colorPrimary">@color/white</item>
         <item name="colorPrimaryVariant">@color/grey_600_dark</item>
-        <item name="colorOnPrimary">@color/white</item>
+        <item name="colorOnPrimary">@color/grey_600</item>
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/grey_600</item>
         <item name="colorSecondaryVariant">@color/grey_600_light</item>
-        <item name="colorOnSecondary">@color/grey_600_dark</item>
+        <item name="colorOnSecondary">@color/white</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
