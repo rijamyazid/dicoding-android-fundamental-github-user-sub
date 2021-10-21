@@ -7,7 +7,7 @@ import android.os.Bundle
 import android.view.*
 import android.widget.SearchView
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
@@ -26,7 +26,7 @@ class HomeFragment : Fragment() {
 
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
-    private val viewModel: HomeViewModel by viewModels()
+    private val viewModel: HomeViewModel by activityViewModels()
     private lateinit var homeAdapter: HomeAdapter
     private lateinit var searchView: SearchView
 
@@ -53,7 +53,7 @@ class HomeFragment : Fragment() {
         }
 
         binding.rvUsers.apply {
-            layoutManager = LinearLayoutManager(context)
+            layoutManager = LinearLayoutManager(view.context)
             adapter = homeAdapter
         }
 

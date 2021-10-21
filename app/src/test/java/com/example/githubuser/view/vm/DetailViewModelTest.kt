@@ -1,7 +1,7 @@
 package com.example.githubuser.view.vm
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import com.example.githubuser.util.FakeData
+import com.example.githubuser.util.DataConstant
 import com.example.githubuser.util.Helpers.convertToDomain
 import com.example.githubuser.util.LiveDataTestUtil.getOrAwaitValue
 import com.example.githubuser.util.MainCoroutineRule
@@ -29,10 +29,10 @@ class DetailViewModelTest {
 
     @Test
     fun `get detail user normal`() {
-        detailViewModel.setUserDetail(FakeData.fakeUser1.convertToDomain())
+        detailViewModel.setUserDetail(DataConstant.fakeUser1.convertToDomain())
         val result = detailViewModel.userDetail.getOrAwaitValue()
         Assert.assertEquals(
-            FakeData.fakeUser1.convertToDomain(),
+            DataConstant.fakeUser1.convertToDomain(),
             result
         )
     }
@@ -42,7 +42,7 @@ class DetailViewModelTest {
         detailViewModel.setUserDetail(null)
         val result = detailViewModel.userDetail.getOrAwaitValue()
         Assert.assertEquals(
-            FakeData.nullUserData,
+            DataConstant.nullUserData,
             result
         )
     }

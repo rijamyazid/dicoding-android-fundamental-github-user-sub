@@ -11,7 +11,10 @@ import com.bumptech.glide.request.RequestOptions
 import com.example.githubuser.R
 import com.example.githubuser.databinding.FragmentDetailBinding
 import com.example.githubuser.datasource.local.model.UserModel
+import com.example.githubuser.util.DataConstant.detailFragmentPager
+import com.example.githubuser.view.ui.viewpager2.PagerAdapter
 import com.example.githubuser.view.vm.DetailViewModel
+import com.google.android.material.tabs.TabLayoutMediator
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -22,6 +25,8 @@ class DetailFragment : Fragment() {
     private val args: DetailFragmentArgs by navArgs()
     private lateinit var userDetail: UserModel
     private val viewModel: DetailViewModel by viewModels()
+    private lateinit var detailPagerAdapter: PagerAdapter
+    private lateinit var dataListener: DataReceivedListener
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,6 +46,17 @@ class DetailFragment : Fragment() {
 
         userDetail = args.userDetail
         viewModel.setUserDetail(userDetail)
+
+        detailPagerAdapter = object : PagerAdapter(this) {
+            override fun fragmentList(): List<Fragment> {
+                return detailFragmentPager.values.toList()
+            }
+        }
+        detailPagerAdapter.setArguments(userDetail.username)
+        binding.viewPagerDetail.adapter = detailPagerAdapter
+        TabLayoutMediator(binding.tabLayoutDetail, binding.viewPagerDetail) { tab, position ->
+            tab.text = detailFragmentPager.keys.toList()[position]
+        }.attach()
 
         viewModel.userDetail.observe(viewLifecycleOwner, {
             binding.tvName.text = it.name
@@ -66,7 +82,6 @@ class DetailFragment : Fragment() {
         inflater.inflate(R.menu.menu_appbar, menu)
         val itemSearch = menu.findItem(R.id.appbar_search)
         itemSearch.isVisible = false
-
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -90,6 +105,14 @@ class DetailFragment : Fragment() {
         action = Intent.ACTION_SEND
         putExtra(Intent.EXTRA_TEXT, content.trimMargin("#"))
         type = "text/plain"
+    }
+
+    interface DataReceivedListener {
+        fun onDataReceived(username: String)
+    }
+
+    fun setDataListener(listener: DataReceivedListener) {
+        this.dataListener = listener
     }
 
 }

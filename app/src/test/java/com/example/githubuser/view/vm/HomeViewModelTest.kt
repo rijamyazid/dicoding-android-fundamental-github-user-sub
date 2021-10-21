@@ -3,9 +3,8 @@ package com.example.githubuser.view.vm
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.example.githubuser.datasource.local.LocalSealed
 import com.example.githubuser.datasource.repository.FakeMainRepository
-import com.example.githubuser.util.FakeData
+import com.example.githubuser.util.DataConstant
 import com.example.githubuser.util.Helpers.CODE_EMPTY
-import com.example.githubuser.util.LiveDataTestUtil.getOrAwaitValue
 import com.example.githubuser.util.MainCoroutineRule
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.junit.Assert
@@ -34,10 +33,10 @@ class HomeViewModelTest {
 
     @Test
     fun `get list users normal`() {
-        mainRepository.fakeUsers = FakeData.listUserLocal
+        mainRepository.fakeUsers = DataConstant.listUserLocal
         val result = homeViewModel.getAllUsers().getOrAwaitValue()
         Assert.assertEquals(
-            LocalSealed.Value(FakeData.listUserLocal),
+            LocalSealed.Value(DataConstant.listUserLocal),
             result
         )
     }

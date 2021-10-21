@@ -36,4 +36,28 @@ class MainRepositoryImpl
             }
         }
 
+    override fun getFollowers(username: String): LiveData<LocalSealed<List<UserModel>>> = liveData {
+        emit(LocalSealed.Loading(true))
+        when (val response = remoteDataSource.getFollowers(username)) {
+            is RemoteSealed.Value -> {
+                emit(LocalSealed.Value(response.data))
+            }
+            is RemoteSealed.Error -> {
+                emit(LocalSealed.Error(response.message))
+            }
+        }
+    }
+
+    override fun getFollowing(username: String): LiveData<LocalSealed<List<UserModel>>> = liveData {
+        emit(LocalSealed.Loading(true))
+        when (val response = remoteDataSource.getFollowing(username)) {
+            is RemoteSealed.Value -> {
+                emit(LocalSealed.Value(response.data))
+            }
+            is RemoteSealed.Error -> {
+                emit(LocalSealed.Error(response.message))
+            }
+        }
+    }
+
 }

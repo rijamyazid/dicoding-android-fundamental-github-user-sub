@@ -9,13 +9,13 @@ import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.ext.junit.rules.ActivityScenarioRule
-import com.example.githubuser.util.FakeData
+import com.example.githubuser.util.DataConstant
 import org.junit.Rule
 import org.junit.Test
 
 class MainActivityTest {
 
-    private val firstFakeData = FakeData.fakeUser1
+    private val firstFakeData = DataConstant.fakeUser1
     private val userDataTotal = 10
 
     @get:Rule

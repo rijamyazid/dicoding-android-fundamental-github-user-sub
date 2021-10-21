@@ -8,5 +8,6 @@ interface MainRepository {
 
     fun getUsers(): LiveData<LocalSealed<List<UserModel>>>
     fun getUsersByQuery(query: String?): LiveData<LocalSealed<List<UserModel>>>
-
+    fun getFollowers(username: String): LiveData<LocalSealed<List<UserModel>>>
+    fun getFollowing(username: String): LiveData<LocalSealed<List<UserModel>>>
 }

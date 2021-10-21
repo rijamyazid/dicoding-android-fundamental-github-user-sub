@@ -50,14 +50,64 @@ class RemoteDataSourceImpl
                     }
                     else -> {
                         for (user in getUsers.items) {
-                            if (user.login.isNullOrEmpty()) RemoteSealed.Error(CODE_EMPTY)
+                            if (user.login.isNullOrEmpty()) continue
                             val userDetailResponse =
-                                ApiConfig.getApiService().getUserDetail(user.login!!)
+                                ApiConfig.getApiService().getUserDetail(user.login)
                             userModel.add(userDetailResponse.convertToDomain())
                             if (userModel.size == 10) break
                         }
                         RemoteSealed.Value(userModel)
                     }
+                }
+            }
+        } catch (e: Throwable) {
+            Log.d("TESTING_PURPOSE", "Exception ${e.message}")
+            return RemoteSealed.Error(e.message)
+        }
+    }
+
+    override suspend fun getFollowers(username: String): RemoteSealed<List<UserModel>> {
+        try {
+            val getUsers = ApiConfig.getApiService().getUserFollowers(username)
+            val userModel = ArrayList<UserModel>()
+            return when {
+                getUsers.isEmpty() -> {
+                    RemoteSealed.Error(CODE_EMPTY)
+                }
+                else -> {
+                    for (user in getUsers) {
+                        if (user.login.isNullOrEmpty()) continue
+                        val userDetailResponse =
+                            ApiConfig.getApiService().getUserDetail(user.login)
+                        userModel.add(userDetailResponse.convertToDomain())
+                        if (userModel.size == 10) break
+                    }
+                    RemoteSealed.Value(userModel)
+                }
+            }
+        } catch (e: Throwable) {
+            Log.d("TESTING_PURPOSE", "Exception ${e.message}")
+            return RemoteSealed.Error(e.message)
+        }
+    }
+
+    override suspend fun getFollowing(username: String): RemoteSealed<List<UserModel>> {
+        try {
+            val getUsers = ApiConfig.getApiService().getUserFollowing(username)
+            val userModel = ArrayList<UserModel>()
+            return when {
+                getUsers.isEmpty() -> {
+                    RemoteSealed.Error(CODE_EMPTY)
+                }
+                else -> {
+                    for (user in getUsers) {
+                        if (user.login.isNullOrEmpty()) continue
+                        val userDetailResponse =
+                            ApiConfig.getApiService().getUserDetail(user.login)
+                        userModel.add(userDetailResponse.convertToDomain())
+                        if (userModel.size == 10) break
+                    }
+                    RemoteSealed.Value(userModel)
                 }
             }
         } catch (e: Throwable) {

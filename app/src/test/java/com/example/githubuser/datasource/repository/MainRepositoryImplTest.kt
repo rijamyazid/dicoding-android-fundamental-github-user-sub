@@ -3,9 +3,8 @@ package com.example.githubuser.datasource.repository
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.example.githubuser.datasource.local.LocalSealed
 import com.example.githubuser.datasource.remote.FakeRemoteDataSource
-import com.example.githubuser.util.FakeData
+import com.example.githubuser.util.DataConstant
 import com.example.githubuser.util.Helpers.CODE_EMPTY
-import com.example.githubuser.util.LiveDataTestUtil.getOrAwaitValue
 import com.example.githubuser.util.MainCoroutineRule
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.junit.Assert
@@ -34,10 +33,10 @@ class MainRepositoryImplTest {
 
     @Test
     fun `get list users normal`() {
-        remoteDataSource.fakeUsers = FakeData.listUserRemote
+        remoteDataSource.fakeUsers = DataConstant.listUserRemote
         val result = mainRepository.getAllUsers().getOrAwaitValue()
         Assert.assertEquals(
-            LocalSealed.Value(FakeData.listUserLocal),
+            LocalSealed.Value(DataConstant.listUserLocal),
             result
         )
     }
