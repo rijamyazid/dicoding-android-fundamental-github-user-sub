@@ -63,16 +63,19 @@ class FollowersFragment : Fragment() {
                 is LocalSealed.Loading -> {
                     binding.pbFollowers.visibility = View.VISIBLE
                     binding.rvFollowers.visibility = View.GONE
+                    binding.tvErrorFollowers.visibility = View.GONE
                 }
                 is LocalSealed.Value -> {
                     itemAdapter.setItems(it.data as ArrayList<UserModel>)
-                    binding.textView.text = it.data.size.toString()
                     binding.pbFollowers.visibility = View.GONE
                     binding.rvFollowers.visibility = View.VISIBLE
+                    binding.tvErrorFollowers.visibility = View.GONE
                 }
-                else -> {
+                is LocalSealed.Error -> {
                     binding.pbFollowers.visibility = View.GONE
-                    binding.rvFollowers.visibility = View.VISIBLE
+                    binding.tvErrorFollowers.text =
+                        resources.getString(R.string.error_message, it.message)
+                    binding.tvErrorFollowers.visibility = View.VISIBLE
                 }
             }
         })

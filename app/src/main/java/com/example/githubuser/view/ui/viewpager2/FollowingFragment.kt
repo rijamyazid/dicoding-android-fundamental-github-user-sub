@@ -64,16 +64,19 @@ class FollowingFragment : Fragment() {
                 is LocalSealed.Loading -> {
                     binding.pbFollowing.visibility = View.VISIBLE
                     binding.rvFollowing.visibility = View.GONE
+                    binding.tvErrorFollowing.visibility = View.GONE
                 }
                 is LocalSealed.Value -> {
                     itemAdapter.setItems(it.data as ArrayList<UserModel>)
-                    binding.textView2.text = it.data.size.toString()
                     binding.pbFollowing.visibility = View.GONE
                     binding.rvFollowing.visibility = View.VISIBLE
+                    binding.tvErrorFollowing.visibility = View.GONE
                 }
-                else -> {
+                is LocalSealed.Error -> {
                     binding.pbFollowing.visibility = View.GONE
-                    binding.rvFollowing.visibility = View.VISIBLE
+                    binding.tvErrorFollowing.text =
+                        resources.getString(R.string.error_message, it.message)
+                    binding.tvErrorFollowing.visibility = View.VISIBLE
                 }
             }
         })

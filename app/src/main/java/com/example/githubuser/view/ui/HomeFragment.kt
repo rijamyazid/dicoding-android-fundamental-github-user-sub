@@ -2,7 +2,6 @@ package com.example.githubuser.view.ui
 
 import android.app.SearchManager
 import android.content.Context
-import android.graphics.Color
 import android.os.Bundle
 import android.view.*
 import android.widget.SearchView
@@ -18,7 +17,6 @@ import com.example.githubuser.datasource.local.LocalSealed
 import com.example.githubuser.datasource.local.model.UserModel
 import com.example.githubuser.view.adapter.HomeAdapter
 import com.example.githubuser.view.vm.HomeViewModel
-import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -62,8 +60,6 @@ class HomeFragment : Fragment() {
                 viewModel.refresh()
                 isRefreshing = false
             }
-
-            setColorSchemeColors(Color.GREEN, Color.RED, Color.BLUE)
         }
 
         if (viewModel.query.value.isNullOrEmpty()) {
@@ -129,20 +125,19 @@ class HomeFragment : Fragment() {
             is LocalSealed.Loading -> {
                 binding.pbHome.visibility = View.VISIBLE
                 binding.rvUsers.visibility = View.GONE
+                binding.tvErrorHome.visibility = View.GONE
             }
             is LocalSealed.Value -> {
                 homeAdapter.setItems(observed.data as ArrayList<UserModel>)
                 binding.rvUsers.visibility = View.VISIBLE
                 binding.pbHome.visibility = View.GONE
+                binding.tvErrorHome.visibility = View.GONE
             }
             is LocalSealed.Error -> {
-                Snackbar.make(
-                    requireView(),
-                    "Oops, ada kesalahan teknis. Reason: ${observed.message}",
-                    Snackbar.LENGTH_LONG
-                ).show()
-                binding.rvUsers.visibility = View.VISIBLE
                 binding.pbHome.visibility = View.GONE
+                binding.tvErrorHome.text =
+                    resources.getString(R.string.error_message, observed.message)
+                binding.tvErrorHome.visibility = View.VISIBLE
             }
         }
     }
