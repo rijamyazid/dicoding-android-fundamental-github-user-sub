@@ -6,16 +6,18 @@ import com.example.githubuser.datasource.remote.api.ApiConfig
 import com.example.githubuser.util.Helpers.CODE_EMPTY
 import com.example.githubuser.util.Helpers.convertToDomain
 import com.example.githubuser.util.Helpers.validateNull
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class RemoteDataSourceImpl
 @Inject constructor() : RemoteDataSource {
 
-    override suspend fun getUsers(): RemoteSealed<List<UserModel>> {
+    override suspend fun getUsers(): RemoteSealed<List<UserModel>> = withContext(Dispatchers.IO) {
         try {
             val getUsers = ApiConfig.getApiService().getUsers()
             val userModel = ArrayList<UserModel>()
-            return when {
+            when {
                 getUsers.isEmpty() -> {
                     RemoteSealed.Error(CODE_EMPTY)
                 }
@@ -33,86 +35,89 @@ class RemoteDataSourceImpl
             }
         } catch (e: Throwable) {
             Log.d("TESTING_PURPOSE", "Exception ${e.message}")
-            return RemoteSealed.Error(e.message)
+            RemoteSealed.Error(e.message)
         }
     }
 
-    override suspend fun getUsersByQuery(query: String?): RemoteSealed<List<UserModel>> {
-        try {
-            val userModel = ArrayList<UserModel>()
-            if (query.isNullOrEmpty()) {
-                return getUsers()
-            } else {
-                val getUsers = ApiConfig.getApiService().getUsersByQuery(query)
-                return when {
-                    getUsers.items.isEmpty() -> {
-                        RemoteSealed.Error(CODE_EMPTY)
-                    }
-                    else -> {
-                        for (user in getUsers.items) {
-                            if (user.login.isNullOrEmpty()) continue
-                            val userDetailResponse =
-                                ApiConfig.getApiService().getUserDetail(user.login)
-                            userModel.add(userDetailResponse.convertToDomain())
-                            if (userModel.size == 10) break
+    override suspend fun getUsersByQuery(query: String?): RemoteSealed<List<UserModel>> =
+        withContext(Dispatchers.IO) {
+            try {
+                val userModel = ArrayList<UserModel>()
+                if (query.isNullOrEmpty()) {
+                    getUsers()
+                } else {
+                    val getUsers = ApiConfig.getApiService().getUsersByQuery(query)
+                    when {
+                        getUsers.items.isEmpty() -> {
+                            RemoteSealed.Error(CODE_EMPTY)
+                        }
+                        else -> {
+                            for (user in getUsers.items) {
+                                if (user.login.isNullOrEmpty()) continue
+                                val userDetailResponse =
+                                    ApiConfig.getApiService().getUserDetail(user.login)
+                                userModel.add(userDetailResponse.convertToDomain())
+                                if (userModel.size == 10) break
                         }
                         RemoteSealed.Value(userModel)
                     }
                 }
             }
         } catch (e: Throwable) {
-            Log.d("TESTING_PURPOSE", "Exception ${e.message}")
-            return RemoteSealed.Error(e.message)
+                Log.d("TESTING_PURPOSE", "Exception ${e.message}")
+                RemoteSealed.Error(e.message)
         }
     }
 
-    override suspend fun getFollowers(username: String): RemoteSealed<List<UserModel>> {
-        try {
-            val getUsers = ApiConfig.getApiService().getUserFollowers(username)
-            val userModel = ArrayList<UserModel>()
-            return when {
-                getUsers.isEmpty() -> {
-                    RemoteSealed.Error(CODE_EMPTY)
-                }
-                else -> {
-                    for (user in getUsers) {
-                        if (user.login.isNullOrEmpty()) continue
-                        val userDetailResponse =
-                            ApiConfig.getApiService().getUserDetail(user.login)
-                        userModel.add(userDetailResponse.convertToDomain())
-                        if (userModel.size == 10) break
+    override suspend fun getFollowers(username: String): RemoteSealed<List<UserModel>> =
+        withContext(Dispatchers.IO) {
+            try {
+                val getUsers = ApiConfig.getApiService().getUserFollowers(username)
+                val userModel = ArrayList<UserModel>()
+                when {
+                    getUsers.isEmpty() -> {
+                        RemoteSealed.Error(CODE_EMPTY)
+                    }
+                    else -> {
+                        for (user in getUsers) {
+                            if (user.login.isNullOrEmpty()) continue
+                            val userDetailResponse =
+                                ApiConfig.getApiService().getUserDetail(user.login)
+                            userModel.add(userDetailResponse.convertToDomain())
+                            if (userModel.size == 10) break
                     }
                     RemoteSealed.Value(userModel)
                 }
             }
         } catch (e: Throwable) {
-            Log.d("TESTING_PURPOSE", "Exception ${e.message}")
-            return RemoteSealed.Error(e.message)
+                Log.d("TESTING_PURPOSE", "Exception ${e.message}")
+                RemoteSealed.Error(e.message)
         }
     }
 
-    override suspend fun getFollowing(username: String): RemoteSealed<List<UserModel>> {
-        try {
-            val getUsers = ApiConfig.getApiService().getUserFollowing(username)
-            val userModel = ArrayList<UserModel>()
-            return when {
-                getUsers.isEmpty() -> {
-                    RemoteSealed.Error(CODE_EMPTY)
-                }
-                else -> {
-                    for (user in getUsers) {
-                        if (user.login.isNullOrEmpty()) continue
-                        val userDetailResponse =
-                            ApiConfig.getApiService().getUserDetail(user.login)
-                        userModel.add(userDetailResponse.convertToDomain())
-                        if (userModel.size == 10) break
+    override suspend fun getFollowing(username: String): RemoteSealed<List<UserModel>> =
+        withContext(Dispatchers.IO) {
+            try {
+                val getUsers = ApiConfig.getApiService().getUserFollowing(username)
+                val userModel = ArrayList<UserModel>()
+                when {
+                    getUsers.isEmpty() -> {
+                        RemoteSealed.Error(CODE_EMPTY)
+                    }
+                    else -> {
+                        for (user in getUsers) {
+                            if (user.login.isNullOrEmpty()) continue
+                            val userDetailResponse =
+                                ApiConfig.getApiService().getUserDetail(user.login)
+                            userModel.add(userDetailResponse.convertToDomain())
+                            if (userModel.size == 10) break
                     }
                     RemoteSealed.Value(userModel)
                 }
             }
         } catch (e: Throwable) {
-            Log.d("TESTING_PURPOSE", "Exception ${e.message}")
-            return RemoteSealed.Error(e.message)
+                Log.d("TESTING_PURPOSE", "Exception ${e.message}")
+                RemoteSealed.Error(e.message)
         }
     }
 }
