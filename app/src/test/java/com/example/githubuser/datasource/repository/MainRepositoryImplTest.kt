@@ -5,6 +5,7 @@ import com.example.githubuser.datasource.local.LocalSealed
 import com.example.githubuser.datasource.remote.FakeRemoteDataSource
 import com.example.githubuser.util.DataConstant
 import com.example.githubuser.util.Helpers.CODE_EMPTY
+import com.example.githubuser.util.LiveDataTestUtil.getOrAwaitValue
 import com.example.githubuser.util.MainCoroutineRule
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.junit.Assert
@@ -28,27 +29,88 @@ class MainRepositoryImplTest {
     @Before
     fun createRepository() {
         remoteDataSource = FakeRemoteDataSource()
-        mainRepository = MainRepositoryImpl(remoteDataSource)
+        mainRepository = MainRepositoryImplMirror(remoteDataSource)
     }
 
     @Test
-    fun `get list users normal`() {
-        remoteDataSource.fakeUsers = DataConstant.listUserRemote
-        val result = mainRepository.getAllUsers().getOrAwaitValue()
+    fun `get list user normal`() {
+        remoteDataSource.fakeUsers = DataConstant.listUsers
+        val result = mainRepository.getUsers().getOrAwaitValue()
         Assert.assertEquals(
-            LocalSealed.Value(DataConstant.listUserLocal),
+            LocalSealed.Value(DataConstant.listUsers),
             result
         )
     }
 
     @Test
-    fun `get list users empty`() {
-        remoteDataSource.fakeUsers = mutableListOf()
-        val result = mainRepository.getAllUsers().getOrAwaitValue()
+    fun `get list user empty`() {
+        val result = mainRepository.getUsers().getOrAwaitValue()
         Assert.assertEquals(
             LocalSealed.Error(CODE_EMPTY),
             result
         )
     }
 
+    @Test
+    fun `get list user by query normal`() {
+        val query = "Query"
+        remoteDataSource.fakeUserByQueryandUsername = DataConstant.fakeUserByQueryandUsername
+        val result = mainRepository.getUsersByQuery(query).getOrAwaitValue()
+        Assert.assertEquals(
+            LocalSealed.Value(DataConstant.fakeUserByQueryandUsername[query]),
+            result
+        )
+    }
+
+    @Test
+    fun `get list user by query empty`() {
+        val query = "Query"
+        val result = mainRepository.getUsersByQuery(query).getOrAwaitValue()
+        Assert.assertEquals(
+            LocalSealed.Error(CODE_EMPTY),
+            result
+        )
+    }
+
+    @Test
+    fun `get list followers normal`() {
+        val username = "Username1"
+        remoteDataSource.fakeUserByQueryandUsername = DataConstant.fakeUserByQueryandUsername
+        val result = mainRepository.getFollowers(username).getOrAwaitValue()
+        Assert.assertEquals(
+            LocalSealed.Value(DataConstant.fakeUserByQueryandUsername[username]),
+            result
+        )
+    }
+
+    @Test
+    fun `get list followers empty`() {
+        val username = "Username1"
+        val result = mainRepository.getFollowers(username).getOrAwaitValue()
+        Assert.assertEquals(
+            LocalSealed.Error(CODE_EMPTY),
+            result
+        )
+    }
+
+    @Test
+    fun `get list following normal`() {
+        val username = "Username2"
+        remoteDataSource.fakeUserByQueryandUsername = DataConstant.fakeUserByQueryandUsername
+        val result = mainRepository.getFollowing(username).getOrAwaitValue()
+        Assert.assertEquals(
+            LocalSealed.Value(DataConstant.fakeUserByQueryandUsername[username]),
+            result
+        )
+    }
+
+    @Test
+    fun `get list following empty`() {
+        val username = "Username2"
+        val result = mainRepository.getFollowing(username).getOrAwaitValue()
+        Assert.assertEquals(
+            LocalSealed.Error(CODE_EMPTY),
+            result
+        )
+    }
 }

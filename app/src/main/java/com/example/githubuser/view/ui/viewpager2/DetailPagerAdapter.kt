@@ -2,18 +2,17 @@ package com.example.githubuser.view.ui.viewpager2
 
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
+import com.example.githubuser.util.DataConstant.detailTabNames
 
-abstract class PagerAdapter(fragment: Fragment) : FragmentStateAdapter(fragment) {
+class DetailPagerAdapter(fragment: Fragment) : FragmentStateAdapter(fragment) {
 
-    private var username: String = ""
-
-    abstract fun fragmentList(): List<Fragment>
+    private lateinit var username: String
 
     fun setArguments(arguments: String = "") {
         this.username = arguments
     }
 
-    override fun getItemCount() = fragmentList().size
+    override fun getItemCount() = detailTabNames.size
 
     override fun createFragment(position: Int): Fragment {
         return when (position) {

@@ -4,7 +4,7 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.example.githubuser.datasource.local.LocalSealed
 import com.example.githubuser.datasource.repository.FakeMainRepository
 import com.example.githubuser.util.DataConstant
-import com.example.githubuser.util.Helpers.CODE_EMPTY
+import com.example.githubuser.util.Helpers
 import com.example.githubuser.util.LiveDataTestUtil.getOrAwaitValue
 import com.example.githubuser.util.MainCoroutineRule
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -13,11 +13,10 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 
-class HomeViewModelTest {
+class FollowingViewModelTest {
 
     private lateinit var mainRepository: FakeMainRepository
-
-    private lateinit var homeViewModel: HomeViewModel
+    private lateinit var followingViewModel: FollowingViewModel
 
     @get:Rule
     var instantExecutorRule = InstantTaskExecutorRule()
@@ -29,25 +28,26 @@ class HomeViewModelTest {
     @Before
     fun createViewModel() {
         mainRepository = FakeMainRepository()
-        homeViewModel = HomeViewModel(mainRepository)
+        followingViewModel = FollowingViewModel(mainRepository)
     }
 
     @Test
-    fun `get list users normal`() {
-        mainRepository.fakeUsers = DataConstant.listUsers
-        val result = homeViewModel.getUsers().getOrAwaitValue()
+    fun `get followers normal`() {
+        val username = "Username2"
+        mainRepository.fakeUserByQueryandUsername = DataConstant.fakeUserByQueryandUsername
+        val result = followingViewModel.getFollowing(username).getOrAwaitValue()
         Assert.assertEquals(
-            LocalSealed.Value(DataConstant.listUsers),
+            LocalSealed.Value(DataConstant.fakeUserByQueryandUsername[username]),
             result
         )
     }
 
     @Test
-    fun `get list users empty`() {
-        mainRepository.fakeUsers = mutableListOf()
-        val result = homeViewModel.getUsers().getOrAwaitValue()
+    fun `get followers empty`() {
+        val username = "Username1"
+        val result = followingViewModel.getFollowing(username).getOrAwaitValue()
         Assert.assertEquals(
-            LocalSealed.Error(CODE_EMPTY),
+            LocalSealed.Error(Helpers.CODE_EMPTY),
             result
         )
     }
