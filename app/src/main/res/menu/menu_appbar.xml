@@ -8,11 +8,15 @@
         android:title="@string/appbar_search"
         app:actionViewClass="android.widget.SearchView"
         app:showAsAction="always" />
-
     <item
         android:id="@+id/appbar_share"
         android:icon="@drawable/ic_share_24"
         android:title="@string/appbar_share"
         app:iconTint="?attr/colorOnPrimary"
         app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/app_bar_switch"
+        android:checkable="true"
+        android:title="@string/dark_mode"
+        app:showAsAction="never" />
 </menu>

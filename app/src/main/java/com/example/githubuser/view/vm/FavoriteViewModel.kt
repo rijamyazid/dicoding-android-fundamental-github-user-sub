@@ -12,7 +12,7 @@ import javax.inject.Inject
 class FavoriteViewModel
 @Inject constructor(private val repository: MainRepository) : ViewModel() {
 
-    fun getFavoriteUsers(): LiveData<List<UserModel>> =
-        repository.getFavoriteUsers().distinctUntilChanged()
+    val dataFavoriteUsers = getFavoriteUsers().distinctUntilChanged()
+    fun getFavoriteUsers(): LiveData<List<UserModel>> = repository.getFavoriteUsers()
 
 }

@@ -47,7 +47,7 @@ class FavoriteFragment : Fragment() {
             adapter = favoriteAdapter
         }
 
-        viewModel.getFavoriteUsers().observe(viewLifecycleOwner, {
+        viewModel.dataFavoriteUsers.observe(viewLifecycleOwner, {
             favoriteAdapter.setItems(it as ArrayList<UserModel>)
         })
 

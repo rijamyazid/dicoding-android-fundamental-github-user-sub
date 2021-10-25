@@ -13,7 +13,7 @@ class HomeViewModel
 
     fun refresh(query: String? = this.query.value) {
         _dataUsers = repository.getUsers().distinctUntilChanged()
-        this._query.postValue(query)
+        this.query.postValue(query)
     }
 
     private var _dataUsers = getUsers().distinctUntilChanged()
@@ -22,14 +22,12 @@ class HomeViewModel
         return repository.getUsers()
     }
 
-    private var _query = MutableLiveData<String>()
-    val query get() = _query
+    val query = MutableLiveData<String>()
     fun setQuery(query: String?) {
-        this._query.postValue(query)
+        this.query.postValue(query)
     }
 
-    private var _dataUsersByQuery = query.switchMap { getUsersByQuery(it) }.distinctUntilChanged()
-    val dataUsersByQuery get() = _dataUsersByQuery
+    val dataUsersByQuery = query.switchMap { getUsersByQuery(it) }.distinctUntilChanged()
     fun getUsersByQuery(query: String?) = repository.getUsersByQuery(query)
 
 }

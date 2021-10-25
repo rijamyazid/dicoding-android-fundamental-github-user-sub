@@ -25,4 +25,5 @@ class MainActivity : AppCompatActivity() {
         val navController = navHostFragment.navController
         binding.bnvMain.setupWithNavController(navController)
     }
+
 }

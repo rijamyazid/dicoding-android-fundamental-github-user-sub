@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     tools:context=".view.ui.DetailFragment">
 
     <com.google.android.material.appbar.AppBarLayout
@@ -266,12 +265,10 @@
         android:layout_height="match_parent"
         android:fillViewport="true"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
-
             <com.google.android.material.tabs.TabLayout
                 android:id="@+id/tab_layout_detail"
                 android:layout_width="match_parent"
@@ -280,7 +277,6 @@
                 app:tabIndicatorColor="?attr/colorSecondary"
                 app:tabMode="fixed"
                 app:tabSelectedTextColor="?attr/colorSecondary" />
-
             <androidx.viewpager2.widget.ViewPager2
                 android:id="@+id/view_pager_detail"
                 android:layout_width="match_parent"

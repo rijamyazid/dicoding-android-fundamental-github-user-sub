@@ -11,6 +11,7 @@ import javax.inject.Inject
 @HiltViewModel
 class FollowersViewModel
 @Inject constructor(private val repository: MainRepository) : ViewModel() {
+
     private val _username = MutableLiveData<String>()
     fun setUsername(username: String) {
         if (_username.value != username)
