@@ -6,6 +6,7 @@ import androidx.lifecycle.liveData
 import com.example.githubuser.datasource.local.LocalSealed
 import com.example.githubuser.datasource.local.model.UserModel
 import com.example.githubuser.datasource.remote.api.ApiConfig
+import com.example.githubuser.util.EspressoIdlingResource
 import com.example.githubuser.util.Helpers.convertToDomain
 import com.example.githubuser.util.Helpers.validateNull
 import com.example.githubuser.util.NetworkConstant.CODE_EMPTY
@@ -50,11 +51,13 @@ class RemoteDataSourceImpl
     override fun getUsersByQuery(query: String): LiveData<LocalSealed<List<UserModel>>> =
         liveData {
             try {
+                EspressoIdlingResource.increment()
                 emit(LocalSealed.Loading(true))
                 val userModel = ArrayList<UserModel>()
                 val getUsers = ApiConfig.getApiService().getUsersByQuery(query)
                 when {
                     getUsers.items.isEmpty() -> {
+                        EspressoIdlingResource.decrement()
                         emit(LocalSealed.Error(CODE_EMPTY))
                     }
                     else -> {
@@ -65,11 +68,13 @@ class RemoteDataSourceImpl
                             userModel.add(userDetailResponse.convertToDomain())
                             if (userModel.size == 10) break
                         }
+                        EspressoIdlingResource.decrement()
                         emit(LocalSealed.Value(userModel))
                     }
                 }
             } catch (e: Throwable) {
                 Log.d("TESTING_PURPOSE", "Exception ${e.message}")
+                EspressoIdlingResource.decrement()
                 emit(LocalSealed.Error(e.message))
             }
         }
@@ -77,11 +82,13 @@ class RemoteDataSourceImpl
     override fun getFollowers(username: String): LiveData<LocalSealed<List<UserModel>>> =
         liveData {
             try {
+                EspressoIdlingResource.increment()
                 emit(LocalSealed.Loading(true))
                 val getUsers = ApiConfig.getApiService().getUserFollowers(username)
                 val userModel = ArrayList<UserModel>()
                 when {
                     getUsers.isEmpty() -> {
+                        EspressoIdlingResource.decrement()
                         emit(LocalSealed.Error(CODE_EMPTY))
                     }
                     else -> {
@@ -92,11 +99,13 @@ class RemoteDataSourceImpl
                             userModel.add(userDetailResponse.convertToDomain())
                             if (userModel.size == 10) break
                         }
+                        EspressoIdlingResource.decrement()
                         emit(LocalSealed.Value(userModel))
                     }
                 }
             } catch (e: Throwable) {
                 Log.d("TESTING_PURPOSE", "Exception ${e.message}")
+                EspressoIdlingResource.decrement()
                 emit(LocalSealed.Error(e.message))
             }
         }
@@ -104,11 +113,13 @@ class RemoteDataSourceImpl
     override fun getFollowing(username: String): LiveData<LocalSealed<List<UserModel>>> =
         liveData {
             try {
+                EspressoIdlingResource.increment()
                 emit(LocalSealed.Loading(true))
                 val getUsers = ApiConfig.getApiService().getUserFollowing(username)
                 val userModel = ArrayList<UserModel>()
                 when {
                     getUsers.isEmpty() -> {
+                        EspressoIdlingResource.decrement()
                         emit(LocalSealed.Error(CODE_EMPTY))
                     }
                     else -> {
@@ -119,11 +130,13 @@ class RemoteDataSourceImpl
                             userModel.add(userDetailResponse.convertToDomain())
                             if (userModel.size == 10) break
                         }
+                        EspressoIdlingResource.decrement()
                         emit(LocalSealed.Value(userModel))
                     }
                 }
             } catch (e: Throwable) {
                 Log.d("TESTING_PURPOSE", "Exception ${e.message}")
+                EspressoIdlingResource.decrement()
                 emit(LocalSealed.Error(e.message))
             }
         }

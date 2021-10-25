@@ -7,6 +7,7 @@ interface LocalDataSource {
 
     fun readUsers(): LiveData<List<UserModel>>
     fun readUser(username: String): LiveData<UserModel>
+    fun readFavoriteUsers(): LiveData<List<UserModel>>
     suspend fun updateUser(user: UserModel)
     suspend fun insertUser(user: UserModel)
     suspend fun insertUsers(users: List<UserModel>)

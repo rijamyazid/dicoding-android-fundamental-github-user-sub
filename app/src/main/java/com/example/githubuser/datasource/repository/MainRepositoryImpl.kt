@@ -44,6 +44,10 @@ class MainRepositoryImpl
         else remoteDataSource.getUsersByQuery(query)
     }
 
+    override fun getFavoriteUsers(): LiveData<List<UserModel>> {
+        return localDataSource.readFavoriteUsers()
+    }
+
     override fun getFollowers(username: String): LiveData<LocalSealed<List<UserModel>>> {
         return remoteDataSource.getFollowers(username)
     }

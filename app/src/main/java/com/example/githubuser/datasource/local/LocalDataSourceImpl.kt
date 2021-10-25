@@ -15,6 +15,10 @@ class LocalDataSourceImpl
         return userDao.readUser(username)
     }
 
+    override fun readFavoriteUsers(): LiveData<List<UserModel>> {
+        return userDao.readFavoriteUsers()
+    }
+
     override suspend fun updateUser(user: UserModel) {
         userDao.updateUser(user)
     }

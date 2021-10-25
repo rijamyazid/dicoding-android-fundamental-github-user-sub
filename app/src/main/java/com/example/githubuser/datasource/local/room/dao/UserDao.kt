@@ -22,4 +22,7 @@ interface UserDao {
     @Query("SELECT * FROM UserTable")
     fun readUsers(): LiveData<List<UserModel>>
 
+    @Query("SELECT * FROM UserTable WHERE favorite=1")
+    fun readFavoriteUsers(): LiveData<List<UserModel>>
+
 }
