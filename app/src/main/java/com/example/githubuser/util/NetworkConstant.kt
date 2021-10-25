@@ -5,6 +5,7 @@ import android.util.Log
 object NetworkConstant {
 
     private const val TESTING_TAG = "testingLog"
+    const val CODE_EMPTY = "Tidak ada data pengguna"
     const val BASE_URL = "https://api.github.com/"
 
     const val LIST_USER = "users"

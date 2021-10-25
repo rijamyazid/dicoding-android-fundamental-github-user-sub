@@ -1,23 +1,31 @@
 package com.example.githubuser.view.vm
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.distinctUntilChanged
+import androidx.lifecycle.viewModelScope
 import com.example.githubuser.datasource.local.model.UserModel
-import com.example.githubuser.util.DataConstant
+import com.example.githubuser.datasource.repository.MainRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class DetailViewModel
-@Inject constructor() : ViewModel() {
+@Inject constructor(private val repository: MainRepository) : ViewModel() {
 
-    private val _userDetail = MutableLiveData<UserModel>()
-    val userDetail: LiveData<UserModel> get() = _userDetail.distinctUntilChanged()
+    fun getUser(username: String) = repository.getUser(username).distinctUntilChanged()
 
-    fun setUserDetail(userDetail: UserModel?) {
-        _userDetail.postValue(userDetail ?: DataConstant.nullDataUser)
+    fun insertUser(user: UserModel) {
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.insertUser(user)
+        }
+    }
+
+    fun updateUser(user: UserModel) {
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.updateUser(user)
+        }
     }
 
 }

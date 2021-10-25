@@ -44,7 +44,7 @@ class DetailFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         userDetail = args.userDetail
-        viewModel.setUserDetail(userDetail)
+        viewModel.insertUser(userDetail)
 
         detailPagerAdapter = DetailPagerAdapter(this)
         detailPagerAdapter.setArguments(userDetail.username)
@@ -53,7 +53,12 @@ class DetailFragment : Fragment() {
             tab.text = detailTabNames[position]
         }.attach()
 
-        viewModel.userDetail.observe(viewLifecycleOwner, {
+        binding.fabFavorite.setOnClickListener {
+            val userUpdated = userDetail.apply { favorite = !this.favorite }
+            viewModel.updateUser(userUpdated)
+        }
+
+        viewModel.getUser(userDetail.username).observe(viewLifecycleOwner, {
             binding.tvName.text = it.name
             binding.tvUsername.text = it.username
             binding.tvLocation.text = it.location
@@ -61,6 +66,13 @@ class DetailFragment : Fragment() {
             binding.tvRepositoryContent.text = it.repository.toString()
             binding.tvFollowersContent.text = it.follower.toString()
             binding.tvFollowingContent.text = it.following.toString()
+            binding.fabFavorite.setImageResource(
+                if (it.favorite) {
+                    R.drawable.ic_favorited_24
+                } else {
+                    R.drawable.ic_favorite_24
+                }
+            )
 
             Glide.with(view.context)
                 .load(it.avatar)

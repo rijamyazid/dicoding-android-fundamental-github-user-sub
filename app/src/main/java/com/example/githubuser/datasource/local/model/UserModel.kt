@@ -1,8 +1,10 @@
 package com.example.githubuser.datasource.local.model
 
 import android.os.Parcelable
+import androidx.room.Entity
 import kotlinx.parcelize.Parcelize
 
+@Entity(tableName = "UserTable", primaryKeys = ["username"])
 @Parcelize
 data class UserModel(
     val follower: Int,
@@ -12,5 +14,6 @@ data class UserModel(
     val location: String,
     val avatar: String,
     val repository: Int,
-    val username: String
+    val username: String,
+    var favorite: Boolean = false
 ) : Parcelable

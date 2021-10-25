@@ -287,4 +287,13 @@
                 android:layout_height="match_parent" />
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab_favorite"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="@dimen/margin_padding_size_large"
+        android:contentDescription="@string/favorite"
+        android:src="@drawable/ic_favorite_24" />
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
