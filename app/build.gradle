@@ -6,7 +6,6 @@ plugins {
     id 'androidx.navigation.safeargs.kotlin'
     id 'dagger.hilt.android.plugin'
 }
-apply plugin: 'kotlin-android'
 
 android {
     compileSdk 30
@@ -90,4 +89,9 @@ dependencies {
     // DataStore
     implementation "androidx.datastore:datastore:$datastore_ver"
     implementation "androidx.datastore:datastore-preferences:$datastore_ver"
+}
+
+repositories {
+    google()
+    mavenCentral()
 }
