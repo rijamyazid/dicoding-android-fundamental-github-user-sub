@@ -1,6 +1,7 @@
 package com.example.githubuser
 
 import android.os.Bundle
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
@@ -24,6 +25,17 @@ class MainActivity : AppCompatActivity() {
             supportFragmentManager.findFragmentById(R.id.fragmentContainerView) as NavHostFragment
         val navController = navHostFragment.navController
         binding.bnvMain.setupWithNavController(navController)
+    }
+
+    fun appbarState(visible: Int) {
+        when (visible) {
+            View.VISIBLE -> { supportActionBar?.show() }
+            View.GONE -> { supportActionBar?.hide() }
+        }
+    }
+
+    fun bottomNavigationState(visible: Int) {
+        binding.bnvMain.visibility = visible
     }
 
 }

@@ -42,6 +42,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginEnd="@dimen/margin_padding_size_medium"
+                    android:focusableInTouchMode="true"
                     android:focusable="true"
                     app:defaultQueryHint="@string/search_hint"
                     app:iconifiedByDefault="false"
