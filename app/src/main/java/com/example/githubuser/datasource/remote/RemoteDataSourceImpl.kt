@@ -19,12 +19,15 @@ class RemoteDataSourceImpl
     override fun getUsers(): LiveData<LocalSealed<List<UserModel>>> =
         liveData {
             try {
+                EspressoIdlingResource.increment()
                 testingLog("getUsers: Loading")
+                emit(LocalSealed.Loading(true))
                 val userModel = ArrayList<UserModel>()
                 val getUsers = ApiConfig.getApiService().getUsers()
                 when {
                     getUsers.isEmpty() -> {
                         testingLog("getUsers: Empty")
+                        EspressoIdlingResource.decrement()
                         emit(LocalSealed.Error(CODE_EMPTY))
                     }
                     else -> {
@@ -38,12 +41,14 @@ class RemoteDataSourceImpl
                             if (userModel.size == 10) break
                         }
                         testingLog("getUsers: Value")
+                        EspressoIdlingResource.decrement()
                         emit(LocalSealed.Value(userModel))
                     }
                 }
             } catch (e: Throwable) {
                 testingLog("getUsers: Error")
                 Log.d("TESTING_PURPOSE", "Exception ${e.message}")
+                EspressoIdlingResource.decrement()
                 emit(LocalSealed.Error(e.message))
             }
         }

@@ -9,16 +9,20 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
-class HomeViewModel
+class SearchViewModel
 @Inject constructor(private val repository: MainRepository) : ViewModel() {
 
-    private val refreshTrigger = MutableLiveData(Unit)
-
-    fun refresh() {
-        refreshTrigger.postValue(Unit)
+    fun refresh(query: String? = this.query.value) {
+        this.query.postValue(query)
     }
 
-    val dataUsers = refreshTrigger.switchMap { getUsers() }.distinctUntilChanged()
-    fun getUsers() = repository.getUsers()
+    private val query = MutableLiveData<String>()
+    fun setQuery(query: String?) {
+        if (query != this.query.value)
+            this.query.postValue(query)
+    }
+
+    val dataUsersByQuery = query.switchMap { getUsersByQuery(it) }.distinctUntilChanged()
+    fun getUsersByQuery(query: String?) = repository.getUsersByQuery(query)
 
 }
