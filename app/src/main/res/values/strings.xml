@@ -24,4 +24,6 @@
     <string name="favorite_title">Favorite</string>
     <string name="dark_mode">Mode Gelap</string>
     <string name="back_button">Kembali</string>
+    <string name="setting_title">Setting</string>
+    <string name="caption_tampilan">Tampilan</string>
 </resources>

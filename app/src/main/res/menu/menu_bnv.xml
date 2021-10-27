@@ -9,4 +9,8 @@
         android:id="@+id/favoriteFragment"
         android:icon="@drawable/ic_favorited_24"
         android:title="@string/favorite_title" />
+    <item
+        android:id="@+id/settingFragment"
+        android:icon="@drawable/ic_settings_24"
+        android:title="@string/setting_title" />
 </menu>
