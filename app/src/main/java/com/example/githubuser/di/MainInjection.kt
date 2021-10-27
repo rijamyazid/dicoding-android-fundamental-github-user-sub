@@ -1,7 +1,11 @@
 package com.example.githubuser.di
 
 import android.content.Context
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.preferencesDataStore
 import androidx.room.Room
+import com.example.githubuser.datasource.datastore.MainPreferences
 import com.example.githubuser.datasource.local.LocalDataSource
 import com.example.githubuser.datasource.local.LocalDataSourceImpl
 import com.example.githubuser.datasource.local.room.dao.UserDao
@@ -58,6 +62,12 @@ object MainInjection {
     @Provides
     fun provideUserDao(database: MainDatabase): UserDao {
         return database.userDao()
+    }
+
+    @Singleton
+    @Provides
+    fun provideSettingPreferences(@ApplicationContext context: Context): MainPreferences {
+        return MainPreferences(context)
     }
 
 }

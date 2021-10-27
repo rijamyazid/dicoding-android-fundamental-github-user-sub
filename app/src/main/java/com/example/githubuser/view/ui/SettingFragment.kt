@@ -5,14 +5,18 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatDelegate
+import androidx.fragment.app.activityViewModels
 import com.example.githubuser.R
 import com.example.githubuser.databinding.FragmentSettingBinding
+import com.example.githubuser.view.vm.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 class SettingFragment : Fragment() {
 
     private var _binding: FragmentSettingBinding? = null
     private val binding get() = _binding!!
+    private val viewModel: MainViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -26,6 +30,15 @@ class SettingFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        binding.apply {
+            switchDarkMode.setOnCheckedChangeListener { _, isChecked ->
+                viewModel.saveThemeSetting(isChecked)
+            }
+        }
+
+        viewModel.getThemeSettings().observe(viewLifecycleOwner, { isDarkMode ->
+            binding.switchDarkMode.isChecked = isDarkMode
+        })
     }
 
 }
