@@ -7,6 +7,7 @@ import com.example.githubuser.util.DataConstant
 import com.example.githubuser.util.Helpers
 import com.example.githubuser.util.LiveDataTestUtil.getOrAwaitValue
 import com.example.githubuser.util.MainCoroutineRule
+import com.example.githubuser.util.NetworkConstant.CODE_EMPTY
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.junit.Assert
 import org.junit.Before
@@ -47,7 +48,7 @@ class FollowingViewModelTest {
         val username = "Username1"
         val result = followingViewModel.getFollowing(username).getOrAwaitValue()
         Assert.assertEquals(
-            LocalSealed.Error(Helpers.CODE_EMPTY),
+            LocalSealed.Error(CODE_EMPTY),
             result
         )
     }

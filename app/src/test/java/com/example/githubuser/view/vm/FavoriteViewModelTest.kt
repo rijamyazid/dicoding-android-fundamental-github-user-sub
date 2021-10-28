@@ -11,31 +11,30 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 
-class DetailViewModelTest {
+class FavoriteViewModelTest {
 
-    private lateinit var mainRepository: FakeMainRepository
-    private lateinit var detailViewModel: DetailViewModel
+    private lateinit var repository: FakeMainRepository
+    private lateinit var viewModel: FavoriteViewModel
 
     @get:Rule
-    var instantExecutorRule = InstantTaskExecutorRule()
+    var instanceExecutorRule = InstantTaskExecutorRule()
 
     @ExperimentalCoroutinesApi
     @get:Rule
-    var mainCoroutineRule = MainCoroutineRule()
+    val mainCoroutineRule = MainCoroutineRule()
 
     @Before
     fun createViewModel() {
-        mainRepository = FakeMainRepository()
-        detailViewModel = DetailViewModel(mainRepository)
+        repository = FakeMainRepository()
+        viewModel = FavoriteViewModel(repository)
     }
 
     @Test
-    fun `get detail user`() {
-        val username = "mojombo"
-        mainRepository.fakeMapUsers = DataConstant.mapUsers
-        val result = detailViewModel.getUser(username).getOrAwaitValue()
+    fun `get favourite users`() {
+        repository.fakeListUsers = DataConstant.listUsers
+        val result = viewModel.getFavoriteUsers().getOrAwaitValue()
         Assert.assertEquals(
-            DataConstant.fakeUser1,
+            DataConstant.listUsers,
             result
         )
     }

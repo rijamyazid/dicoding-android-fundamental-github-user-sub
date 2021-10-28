@@ -35,6 +35,11 @@ object DataConstant {
 
     val listUsers = mutableListOf(fakeUser1, fakeUser2)
 
+    val mapUsers = mapOf(
+        "mojombo" to fakeUser1,
+        "pjhyett" to fakeUser2
+    )
+
     val nullDataUser = UserDetailResponse().convertToDomain()
 
     val detailTabNames = listOf("Followers", "Following")

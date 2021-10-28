@@ -6,17 +6,17 @@ import com.example.githubuser.datasource.repository.FakeMainRepository
 import com.example.githubuser.util.DataConstant
 import com.example.githubuser.util.LiveDataTestUtil.getOrAwaitValue
 import com.example.githubuser.util.MainCoroutineRule
-import com.example.githubuser.util.NetworkConstant.CODE_EMPTY
+import com.example.githubuser.util.NetworkConstant
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 
-class HomeViewModelTest {
+class SearchViewModelTest {
 
     private lateinit var mainRepository: FakeMainRepository
-    private lateinit var homeViewModel: HomeViewModel
+    private lateinit var searchViewModel: SearchViewModel
 
     @get:Rule
     var instantExecutorRule = InstantTaskExecutorRule()
@@ -28,25 +28,27 @@ class HomeViewModelTest {
     @Before
     fun createViewModel() {
         mainRepository = FakeMainRepository()
-        homeViewModel = HomeViewModel(mainRepository)
+        searchViewModel = SearchViewModel(mainRepository)
     }
 
     @Test
-    fun `get list users normal`() {
-
-        mainRepository.fakeListUsers = DataConstant.listUsers
-        val result = homeViewModel.getUsers().getOrAwaitValue()
+    fun `get list users by query normal`() {
+        val query = "Query"
+        mainRepository.fakeUserByQueryandUsername = DataConstant.fakeUserByQueryandUsername
+        val result = searchViewModel.getUsersByQuery(query).getOrAwaitValue()
         Assert.assertEquals(
-            LocalSealed.Value(DataConstant.listUsers),
+            LocalSealed.Value(DataConstant.fakeUserByQueryandUsername[query]),
             result
         )
     }
 
     @Test
-    fun `get list users empty`() {
-        val result = homeViewModel.getUsers().getOrAwaitValue()
+    fun `get list users by query empty`() {
+        val query = ""
+        mainRepository.fakeListUsers = DataConstant.listUsers
+        val result = searchViewModel.getUsersByQuery(query).getOrAwaitValue()
         Assert.assertEquals(
-            LocalSealed.Error(CODE_EMPTY),
+            LocalSealed.Value(DataConstant.listUsers),
             result
         )
     }

@@ -1,31 +1,44 @@
 package com.example.githubuser.datasource.remote
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.liveData
+import com.example.githubuser.datasource.local.LocalSealed
 import com.example.githubuser.datasource.local.model.UserModel
-import com.example.githubuser.util.Helpers.CODE_EMPTY
+import com.example.githubuser.util.NetworkConstant.CODE_EMPTY
 
 class FakeRemoteDataSource(
-    var fakeUsers: MutableList<UserModel> = mutableListOf(),
+    var fakeListUsers: MutableList<UserModel> = mutableListOf(),
     var fakeUserByQueryandUsername: Map<String, List<UserModel>> = mutableMapOf()
 ) : RemoteDataSource {
 
-    override suspend fun getUsers(): RemoteSealed<List<UserModel>> {
-        return if (fakeUsers.isEmpty()) RemoteSealed.Error(CODE_EMPTY)
-        else RemoteSealed.Value(fakeUsers)
+    override fun getUsers(): LiveData<LocalSealed<List<UserModel>>> = liveData {
+        emit(
+            if (fakeListUsers.isEmpty()) { LocalSealed.Error(CODE_EMPTY) }
+            else { LocalSealed.Value(fakeListUsers) }
+        )
     }
 
-    override suspend fun getUsersByQuery(query: String?): RemoteSealed<List<UserModel>> {
-        return if (fakeUserByQueryandUsername.isEmpty()) RemoteSealed.Error(CODE_EMPTY)
-        else RemoteSealed.Value(fakeUserByQueryandUsername[query]!!)
+    override fun getUsersByQuery(query: String): LiveData<LocalSealed<List<UserModel>>> = liveData {
+        emit(
+            if (fakeUserByQueryandUsername.isEmpty()) { LocalSealed.Error(CODE_EMPTY) }
+            else { LocalSealed.Value(fakeUserByQueryandUsername[query]!!) }
+        )
     }
 
-    override suspend fun getFollowers(username: String): RemoteSealed<List<UserModel>> {
-        return if (fakeUserByQueryandUsername.isEmpty()) RemoteSealed.Error(CODE_EMPTY)
-        else RemoteSealed.Value(fakeUserByQueryandUsername[username]!!)
+    override fun getFollowers(username: String): LiveData<LocalSealed<List<UserModel>>> = liveData {
+        emit(
+            if (fakeUserByQueryandUsername.isEmpty()) { LocalSealed.Error(CODE_EMPTY) }
+            else { LocalSealed.Value(fakeUserByQueryandUsername[username]!!) }
+        )
     }
 
-    override suspend fun getFollowing(username: String): RemoteSealed<List<UserModel>> {
-        return if (fakeUserByQueryandUsername.isEmpty()) RemoteSealed.Error(CODE_EMPTY)
-        else RemoteSealed.Value(fakeUserByQueryandUsername[username]!!)
+    override fun getFollowing(username: String): LiveData<LocalSealed<List<UserModel>>> = liveData {
+        emit(
+            if (fakeUserByQueryandUsername.isEmpty()) { LocalSealed.Error(CODE_EMPTY) }
+            else { LocalSealed.Value(fakeUserByQueryandUsername[username]!!) }
+        )
     }
+
 
 }
