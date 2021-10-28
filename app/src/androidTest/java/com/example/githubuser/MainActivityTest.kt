@@ -1,17 +1,21 @@
 package com.example.githubuser
 
+import android.view.View
+import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.RecyclerView
-import androidx.test.espresso.Espresso
-import androidx.test.espresso.IdlingPolicies
-import androidx.test.espresso.IdlingRegistry
+import androidx.test.espresso.*
+import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions
+import androidx.test.espresso.action.ViewActions.*
 import androidx.test.espresso.assertion.ViewAssertions
+import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.contrib.RecyclerViewActions
 import androidx.test.espresso.matcher.ViewMatchers
-import androidx.test.espresso.matcher.ViewMatchers.withId
-import androidx.test.espresso.matcher.ViewMatchers.withText
+import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import com.example.githubuser.util.EspressoIdlingResource
+import org.hamcrest.Matcher
+import org.hamcrest.Matchers.allOf
 import org.junit.After
 import org.junit.Before
 import org.junit.Rule
@@ -101,6 +105,53 @@ class MainActivityTest {
         Espresso.onView(withText("FOLLOWING")).perform(ViewActions.click())
         Espresso.onView(withId(R.id.rv_following))
             .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
+    }
+
+    @Test
+    fun loadFavorite() {
+        onView(withId(R.id.rv_users)).check(matches(isDisplayed()))
+        onView(withId(R.id.rv_users)).perform(
+            RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(
+                0,
+                click()
+            )
+        )
+        onView(withId(R.id.fab_favorite)).perform(click())
+        onView(isRoot()).perform(pressBack())
+        onView(withId(R.id.favoriteFragment)).perform(click())
+        onView(withId(R.id.rv_favorite)).check(matches(isDisplayed()))
+        onView(withId(R.id.rv_favorite)).perform(RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(
+            0, click()
+        ))
+        onView(withId(R.id.tv_username)).check(matches(isDisplayed()))
+    }
+
+    @Test
+    fun loadSearchResult() {
+        onView(withId(R.id.appbar_search)).perform(click())
+        onView(withId(R.id.search_view_search)).perform(click(), typeSearchViewText("rijamyazid"))
+        onView(withId(R.id.rv_search)).check(matches(isDisplayed()))
+        onView(withId(R.id.rv_search)).perform(RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(
+            0, click()
+        ))
+        onView(withId(R.id.tv_username)).check(matches(withText("rijamyazid")))
+    }
+
+    private fun typeSearchViewText(text: String): ViewAction {
+        return object: ViewAction {
+            override fun getConstraints(): Matcher<View> {
+                return allOf(isDisplayed(), isAssignableFrom(SearchView::class.java))
+            }
+
+            override fun getDescription(): String {
+                return "Change view text"
+            }
+
+            override fun perform(uiController: UiController?, view: View?) {
+                (view as SearchView).setQuery(text, false)
+            }
+
+        }
     }
 
 }
