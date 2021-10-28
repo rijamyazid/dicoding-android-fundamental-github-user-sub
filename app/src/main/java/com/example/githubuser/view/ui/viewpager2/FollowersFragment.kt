@@ -46,11 +46,7 @@ class FollowersFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        itemAdapter = object : HomeAdapter() {
-            override fun onBindData(viewHolder: UserViewHolder, data: UserModel) {
-                bindToRow(view, viewHolder, data)
-            }
-        }
+        itemAdapter = HomeAdapter(view)
         binding.rvFollowers.apply {
             layoutManager = LinearLayoutManager(view.context)
             adapter = itemAdapter
@@ -80,22 +76,6 @@ class FollowersFragment : Fragment() {
             }
         })
 
-    }
-
-    private fun bindToRow(view: View, viewHolder: HomeAdapter.UserViewHolder, data: UserModel) {
-        with(viewHolder) {
-            binding.tvNameItem.text = data.name
-            binding.tvLocationItem.text = data.location
-            binding.tvCompanyItem.text = data.company
-            Glide.with(view.context)
-                .load(data.avatar)
-                .apply(
-                    RequestOptions.placeholderOf(R.drawable.ic_loading)
-                        .error(R.drawable.ic_error)
-                )
-                .circleCrop()
-                .into(binding.imgUserItem)
-        }
     }
 
 }

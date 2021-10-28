@@ -41,26 +41,26 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        homeAdapter = object : HomeAdapter() {
-            override fun onBindData(viewHolder: UserViewHolder, data: UserModel) {
-                bindToRow(view, viewHolder, data)
-            }
+        homeAdapter = HomeAdapter(view) { data ->
+            findNavController().navigate(
+                HomeFragmentDirections.actionHomeFragmentToDetailFragment(data)
+            )
         }
 
-        binding.swipeRefreshHome.apply {
-            setOnRefreshListener {
-                viewModel.refresh()
-                isRefreshing = false
+        with(binding) {
+            swipeRefreshHome.apply {
+                setOnRefreshListener {
+                    viewModel.refresh()
+                    isRefreshing = false
+                }
             }
-        }
-
-        binding.rvUsers.apply {
-            layoutManager = LinearLayoutManager(view.context)
-            adapter = homeAdapter
+            rvUsers.apply {
+                layoutManager = LinearLayoutManager(view.context)
+                adapter = homeAdapter
+            }
         }
 
         viewModel.dataUsers.observe(viewLifecycleOwner, {
-            testingLog("Home : $it")
             when (it) {
                 is LocalSealed.Loading -> {
                     binding.pbHome.visibility = View.VISIBLE
@@ -83,28 +83,6 @@ class HomeFragment : Fragment() {
         })
     }
 
-    private fun bindToRow(view: View, viewHolder: HomeAdapter.UserViewHolder, data: UserModel) {
-        with(viewHolder) {
-            binding.tvNameItem.text = data.name
-            binding.tvCompanyItem.text = data.company
-            binding.tvLocationItem.text = data.location
-            Glide.with(view.context)
-                .load(data.avatar)
-                .apply(
-                    RequestOptions.placeholderOf(R.drawable.ic_loading)
-                        .error(R.drawable.ic_error)
-                )
-                .circleCrop()
-                .into(binding.imgUserItem)
-
-            binding.root.setOnClickListener {
-                findNavController().navigate(
-                    HomeFragmentDirections.actionHomeFragmentToDetailFragment(data)
-                )
-            }
-        }
-    }
-
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.menu_appbar, menu)
         val itemShare = menu.findItem(R.id.appbar_share)
@@ -120,28 +98,6 @@ class HomeFragment : Fragment() {
             }
         }
         return false
-    }
-
-    private fun universalObserver(observed: LocalSealed<List<UserModel>>) {
-        when (observed) {
-            is LocalSealed.Loading -> {
-                binding.pbHome.visibility = View.VISIBLE
-                binding.rvUsers.visibility = View.GONE
-                binding.tvErrorHome.visibility = View.GONE
-            }
-            is LocalSealed.Value -> {
-                homeAdapter.setItems(observed.data as ArrayList<UserModel>)
-                binding.rvUsers.visibility = View.VISIBLE
-                binding.pbHome.visibility = View.GONE
-                binding.tvErrorHome.visibility = View.GONE
-            }
-            is LocalSealed.Error -> {
-                binding.pbHome.visibility = View.GONE
-                binding.tvErrorHome.text =
-                    resources.getString(R.string.error_message, observed.message)
-                binding.tvErrorHome.visibility = View.VISIBLE
-            }
-        }
     }
 
 }

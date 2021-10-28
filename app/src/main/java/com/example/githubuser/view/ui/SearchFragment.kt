@@ -43,40 +43,38 @@ class SearchFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val searchAdapter = object : HomeAdapter() {
-            override fun onBindData(viewHolder: UserViewHolder, data: UserModel) {
-                bindToRow(view, viewHolder, data)
-            }
+        val searchAdapter = HomeAdapter(view) { data ->
+            findNavController().navigate(
+                SearchFragmentDirections.actionSearchFragmentToDetailFragment(data)
+            )
         }
 
-        binding.swipeRefreshSearch.apply {
-            setOnRefreshListener {
-                viewModel.refresh()
-                isRefreshing = false
+        with(binding) {
+            swipeRefreshSearch.apply {
+                setOnRefreshListener {
+                    viewModel.refresh()
+                    isRefreshing = false
+                }
             }
-        }
-
-        binding.backSearch.setOnClickListener {
-            findNavController().popBackStack()
-        }
-
-        binding.rvSearch.apply {
-            layoutManager = LinearLayoutManager(requireContext())
-            adapter = searchAdapter
-        }
-
-
-        binding.searchViewSearch.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-            override fun onQueryTextSubmit(query: String?): Boolean {
-                return false
+            rvSearch.apply {
+                layoutManager = LinearLayoutManager(requireContext())
+                adapter = searchAdapter
             }
-
-            override fun onQueryTextChange(newText: String?): Boolean {
-                viewModel.setQuery(newText)
-                return true
+            backSearch.setOnClickListener {
+                findNavController().popBackStack()
             }
+            searchViewSearch.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+                override fun onQueryTextSubmit(query: String?): Boolean {
+                    return false
+                }
 
-        })
+                override fun onQueryTextChange(newText: String?): Boolean {
+                    viewModel.setQuery(newText)
+                    return true
+                }
+
+            })
+        }
 
         viewModel.dataUsersByQuery.observe(viewLifecycleOwner, { observed ->
             when (observed) {
@@ -100,28 +98,6 @@ class SearchFragment : BaseFragment() {
             }
         })
 
-    }
-
-    private fun bindToRow(view: View, viewHolder: HomeAdapter.UserViewHolder, data: UserModel) {
-        with(viewHolder) {
-            binding.tvNameItem.text = data.name
-            binding.tvCompanyItem.text = data.company
-            binding.tvLocationItem.text = data.location
-            Glide.with(view.context)
-                .load(data.avatar)
-                .apply(
-                    RequestOptions.placeholderOf(R.drawable.ic_loading)
-                        .error(R.drawable.ic_error)
-                )
-                .circleCrop()
-                .into(binding.imgUserItem)
-
-            binding.root.setOnClickListener {
-                findNavController().navigate(
-                    SearchFragmentDirections.actionSearchFragmentToDetailFragment(data)
-                )
-            }
-        }
     }
 
 }

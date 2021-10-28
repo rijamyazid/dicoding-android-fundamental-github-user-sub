@@ -36,43 +36,23 @@ class FavoriteFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val favoriteAdapter = object : HomeAdapter() {
-            override fun onBindData(viewHolder: UserViewHolder, data: UserModel) {
-                bindToRow(view, viewHolder, data)
-            }
+        val favoriteAdapter = HomeAdapter(view) { data ->
+            findNavController().navigate(
+                FavoriteFragmentDirections.actionFavoriteFragmentToDetailFragment(data)
+            )
         }
 
-        binding.rvFavorite.apply {
-            layoutManager = LinearLayoutManager(requireContext())
-            adapter = favoriteAdapter
+        with(binding) {
+            rvFavorite.apply {
+                layoutManager = LinearLayoutManager(requireContext())
+                adapter = favoriteAdapter
+            }
         }
 
         viewModel.dataFavoriteUsers.observe(viewLifecycleOwner, {
             favoriteAdapter.setItems(it as ArrayList<UserModel>)
         })
 
-    }
-
-    private fun bindToRow(view: View, viewHolder: HomeAdapter.UserViewHolder, data: UserModel) {
-        with(viewHolder.binding) {
-            tvNameItem.text = data.name
-            tvCompanyItem.text = data.company
-            tvLocationItem.text = data.location
-            Glide.with(view.context)
-                .load(data.avatar)
-                .apply(
-                    RequestOptions.placeholderOf(R.drawable.ic_loading)
-                        .error(R.drawable.ic_error)
-                )
-                .circleCrop()
-                .into(imgUserItem)
-
-            root.setOnClickListener {
-                findNavController().navigate(
-                    FavoriteFragmentDirections.actionFavoriteFragmentToDetailFragment(data)
-                )
-            }
-        }
     }
 
 }

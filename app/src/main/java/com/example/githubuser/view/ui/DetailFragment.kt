@@ -49,40 +49,45 @@ class DetailFragment : BaseFragment() {
 
         detailPagerAdapter = DetailPagerAdapter(this)
         detailPagerAdapter.setArguments(userDetail.username)
-        binding.viewPagerDetail.adapter = detailPagerAdapter
-        TabLayoutMediator(binding.tabLayoutDetail, binding.viewPagerDetail) { tab, position ->
-            tab.text = detailTabNames[position]
-        }.attach()
+        with(binding) {
 
-        binding.fabFavorite.setOnClickListener {
-            val userUpdated = userDetail.apply { favorite = !this.favorite }
-            viewModel.updateUser(userUpdated)
+            viewPagerDetail.adapter = detailPagerAdapter
+            TabLayoutMediator(tabLayoutDetail, viewPagerDetail) { tab, position ->
+                tab.text = detailTabNames[position]
+            }.attach()
+
+            fabFavorite.setOnClickListener {
+                val userUpdated = userDetail.apply { favorite = !this.favorite }
+                viewModel.updateUser(userUpdated)
+            }
         }
 
         viewModel.getUser(userDetail.username).observe(viewLifecycleOwner, {
-            binding.tvName.text = it.name
-            binding.tvUsername.text = it.username
-            binding.tvLocation.text = it.location
-            binding.tvCompanyContent.text = it.company
-            binding.tvRepositoryContent.text = it.repository.toString()
-            binding.tvFollowersContent.text = it.follower.toString()
-            binding.tvFollowingContent.text = it.following.toString()
-            binding.fabFavorite.setImageResource(
-                if (it.favorite) {
-                    R.drawable.ic_favorited_24
-                } else {
-                    R.drawable.ic_favorite_24
-                }
-            )
-
-            Glide.with(view.context)
-                .load(it.avatar)
-                .apply(
-                    RequestOptions.placeholderOf(R.drawable.ic_loading)
-                        .error(R.drawable.ic_error)
+            with(binding) {
+                tvName.text = it.name
+                tvUsername.text = it.username
+                tvLocation.text = it.location
+                tvCompanyContent.text = it.company
+                tvRepositoryContent.text = it.repository.toString()
+                tvFollowersContent.text = it.follower.toString()
+                tvFollowingContent.text = it.following.toString()
+                fabFavorite.setImageResource(
+                    if (it.favorite) {
+                        R.drawable.ic_favorited_24
+                    } else {
+                        R.drawable.ic_favorite_24
+                    }
                 )
-                .circleCrop()
-                .into(binding.imgUser)
+
+                Glide.with(view.context)
+                    .load(it.avatar)
+                    .apply(
+                        RequestOptions.placeholderOf(R.drawable.ic_loading)
+                            .error(R.drawable.ic_error)
+                    )
+                    .circleCrop()
+                    .into(imgUser)
+            }
         })
     }
 
