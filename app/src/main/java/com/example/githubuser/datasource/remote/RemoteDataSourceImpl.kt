@@ -58,16 +58,16 @@ class RemoteDataSourceImpl
                                     ApiConfig.getApiService().getUserDetail(user.login)
                                 userModel.add(userDetailResponse.convertToDomain())
                                 if (userModel.size == 10) break
+                            }
+                            RemoteSealed.Value(userModel)
                         }
-                        RemoteSealed.Value(userModel)
                     }
                 }
-            }
-        } catch (e: Throwable) {
+            } catch (e: Throwable) {
                 Log.d("TESTING_PURPOSE", "Exception ${e.message}")
                 RemoteSealed.Error(e.message)
+            }
         }
-    }
 
     override suspend fun getFollowers(username: String): RemoteSealed<List<UserModel>> =
         withContext(Dispatchers.IO) {
@@ -85,15 +85,15 @@ class RemoteDataSourceImpl
                                 ApiConfig.getApiService().getUserDetail(user.login)
                             userModel.add(userDetailResponse.convertToDomain())
                             if (userModel.size == 10) break
+                        }
+                        RemoteSealed.Value(userModel)
                     }
-                    RemoteSealed.Value(userModel)
                 }
-            }
-        } catch (e: Throwable) {
+            } catch (e: Throwable) {
                 Log.d("TESTING_PURPOSE", "Exception ${e.message}")
                 RemoteSealed.Error(e.message)
+            }
         }
-    }
 
     override suspend fun getFollowing(username: String): RemoteSealed<List<UserModel>> =
         withContext(Dispatchers.IO) {
@@ -111,13 +111,13 @@ class RemoteDataSourceImpl
                                 ApiConfig.getApiService().getUserDetail(user.login)
                             userModel.add(userDetailResponse.convertToDomain())
                             if (userModel.size == 10) break
+                        }
+                        RemoteSealed.Value(userModel)
                     }
-                    RemoteSealed.Value(userModel)
                 }
-            }
-        } catch (e: Throwable) {
+            } catch (e: Throwable) {
                 Log.d("TESTING_PURPOSE", "Exception ${e.message}")
                 RemoteSealed.Error(e.message)
+            }
         }
-    }
 }

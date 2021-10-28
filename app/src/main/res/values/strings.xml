@@ -2,19 +2,8 @@
     <!-- APPLICATION NAME -->
     <string name="app_name">GitHub User</string>
     <!-- APPLICATION TEXT -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="gambar_pengguna_git">Gambar Pengguna Git</string>
     <!-- SEPARATOR SYMBOLS -->
-    <string name="separator_colons">:</string>
     <!-- USER ITEM HOLDER TEXT -->
-    <string name="user_name_item">%1$s</string>
-    <string name="user_company_item">%1$s</string>
-    <string name="user_username_item">%1$s</string>
-    <string name="following_title">Following</string>
-    <string name="followers_title">Followers</string>
-    <string name="repository_title">Repository</string>
-    <string name="company_title">Company</string>
-    <string name="appbar_switch">Switch</string>
     <string name="appbar_share">Share</string>
     <string name="appbar_search">Cari</string>
     <string name="search_hint">Nama Pengguna</string>
