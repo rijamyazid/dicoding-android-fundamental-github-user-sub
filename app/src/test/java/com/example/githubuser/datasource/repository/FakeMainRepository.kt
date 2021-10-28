@@ -23,15 +23,16 @@ class FakeMainRepository(
         emit(fakeMapUsers[username]!!)
     }
 
-    override fun getUsersByQuery(query: String?): LiveData<LocalSealed<List<UserModel>>> = liveData {
-        emit(
-            if (query.isNullOrEmpty()) LocalSealed.Value(fakeListUsers)
-            else LocalSealed.Value(fakeUserByQueryandUsername[query]!!)
-        )
-    }
+    override fun getUsersByQuery(query: String?): LiveData<LocalSealed<List<UserModel>>> =
+        liveData {
+            emit(
+                if (query.isNullOrEmpty()) LocalSealed.Value(fakeListUsers)
+                else LocalSealed.Value(fakeUserByQueryandUsername[query]!!)
+            )
+        }
 
     override fun getFavoriteUsers(): LiveData<List<UserModel>> = liveData {
-        emit( fakeListUsers )
+        emit(fakeListUsers)
     }
 
     override fun getFollowers(username: String): LiveData<LocalSealed<List<UserModel>>> = liveData {

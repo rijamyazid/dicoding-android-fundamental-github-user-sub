@@ -1,14 +1,13 @@
 package com.example.githubuser.datasource.local
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.liveData
 import com.example.githubuser.datasource.local.model.UserModel
 
 class FakeLocalDataSource(
     var fakeListUsers: MutableList<UserModel> = mutableListOf(),
     var fakeMapUsers: Map<String, UserModel> = mapOf()
-): LocalDataSource {
+) : LocalDataSource {
     override fun readUsers(): LiveData<List<UserModel>> = liveData {
         emit(fakeListUsers)
     }

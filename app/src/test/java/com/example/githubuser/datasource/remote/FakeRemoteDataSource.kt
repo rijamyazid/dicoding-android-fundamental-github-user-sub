@@ -1,7 +1,6 @@
 package com.example.githubuser.datasource.remote
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.liveData
 import com.example.githubuser.datasource.local.LocalSealed
 import com.example.githubuser.datasource.local.model.UserModel
@@ -14,29 +13,41 @@ class FakeRemoteDataSource(
 
     override fun getUsers(): LiveData<LocalSealed<List<UserModel>>> = liveData {
         emit(
-            if (fakeListUsers.isEmpty()) { LocalSealed.Error(CODE_EMPTY) }
-            else { LocalSealed.Value(fakeListUsers) }
+            if (fakeListUsers.isEmpty()) {
+                LocalSealed.Error(CODE_EMPTY)
+            } else {
+                LocalSealed.Value(fakeListUsers)
+            }
         )
     }
 
     override fun getUsersByQuery(query: String): LiveData<LocalSealed<List<UserModel>>> = liveData {
         emit(
-            if (fakeUserByQueryandUsername.isEmpty()) { LocalSealed.Error(CODE_EMPTY) }
-            else { LocalSealed.Value(fakeUserByQueryandUsername[query]!!) }
+            if (fakeUserByQueryandUsername.isEmpty()) {
+                LocalSealed.Error(CODE_EMPTY)
+            } else {
+                LocalSealed.Value(fakeUserByQueryandUsername[query]!!)
+            }
         )
     }
 
     override fun getFollowers(username: String): LiveData<LocalSealed<List<UserModel>>> = liveData {
         emit(
-            if (fakeUserByQueryandUsername.isEmpty()) { LocalSealed.Error(CODE_EMPTY) }
-            else { LocalSealed.Value(fakeUserByQueryandUsername[username]!!) }
+            if (fakeUserByQueryandUsername.isEmpty()) {
+                LocalSealed.Error(CODE_EMPTY)
+            } else {
+                LocalSealed.Value(fakeUserByQueryandUsername[username]!!)
+            }
         )
     }
 
     override fun getFollowing(username: String): LiveData<LocalSealed<List<UserModel>>> = liveData {
         emit(
-            if (fakeUserByQueryandUsername.isEmpty()) { LocalSealed.Error(CODE_EMPTY) }
-            else { LocalSealed.Value(fakeUserByQueryandUsername[username]!!) }
+            if (fakeUserByQueryandUsername.isEmpty()) {
+                LocalSealed.Error(CODE_EMPTY)
+            } else {
+                LocalSealed.Value(fakeUserByQueryandUsername[username]!!)
+            }
         )
     }
 

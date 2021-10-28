@@ -1,16 +1,13 @@
 package com.example.githubuser.view.ui
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.app.AppCompatDelegate
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import com.example.githubuser.R
 import com.example.githubuser.databinding.FragmentSettingBinding
 import com.example.githubuser.view.vm.MainViewModel
-import dagger.hilt.android.AndroidEntryPoint
 
 class SettingFragment : Fragment() {
 

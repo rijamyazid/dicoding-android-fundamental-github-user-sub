@@ -1,11 +1,10 @@
 package com.example.githubuser.view.ui
 
 import android.view.View
-import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.example.githubuser.MainActivity
 
-abstract class BaseFragment: Fragment() {
+abstract class BaseFragment : Fragment() {
 
     protected open var bottomNavigationState = View.VISIBLE
     protected open var appbarState = View.VISIBLE
@@ -20,9 +19,9 @@ abstract class BaseFragment: Fragment() {
     override fun onStop() {
         super.onStop()
         if (bottomNavigationState == View.GONE)
-                (requireActivity() as MainActivity).bottomNavigationState(View.VISIBLE)
+            (requireActivity() as MainActivity).bottomNavigationState(View.VISIBLE)
         if (appbarState == View.GONE)
-                (requireActivity() as MainActivity).appbarState(View.VISIBLE)
+            (requireActivity() as MainActivity).appbarState(View.VISIBLE)
     }
 
 }

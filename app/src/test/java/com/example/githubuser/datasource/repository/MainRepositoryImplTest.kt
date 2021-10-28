@@ -1,10 +1,8 @@
 package com.example.githubuser.datasource.repository
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import androidx.lifecycle.LiveData
 import com.example.githubuser.datasource.local.FakeLocalDataSource
 import com.example.githubuser.datasource.local.LocalSealed
-import com.example.githubuser.datasource.local.model.UserModel
 import com.example.githubuser.datasource.remote.FakeRemoteDataSource
 import com.example.githubuser.util.DataConstant
 import com.example.githubuser.util.LiveDataTestUtil.getOrAwaitValue

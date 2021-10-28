@@ -8,9 +8,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.bumptech.glide.Glide
-import com.bumptech.glide.request.RequestOptions
-import com.example.githubuser.R
 import com.example.githubuser.databinding.FragmentFavoriteBinding
 import com.example.githubuser.datasource.local.model.UserModel
 import com.example.githubuser.view.adapter.HomeAdapter

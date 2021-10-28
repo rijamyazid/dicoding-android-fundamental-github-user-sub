@@ -4,7 +4,6 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.example.githubuser.datasource.local.LocalSealed
 import com.example.githubuser.datasource.repository.FakeMainRepository
 import com.example.githubuser.util.DataConstant
-import com.example.githubuser.util.Helpers
 import com.example.githubuser.util.LiveDataTestUtil.getOrAwaitValue
 import com.example.githubuser.util.MainCoroutineRule
 import com.example.githubuser.util.NetworkConstant.CODE_EMPTY

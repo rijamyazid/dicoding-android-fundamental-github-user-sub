@@ -8,8 +8,6 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.bumptech.glide.Glide
-import com.bumptech.glide.request.RequestOptions
 import com.example.githubuser.R
 import com.example.githubuser.databinding.FragmentFollowersBinding
 import com.example.githubuser.datasource.local.LocalSealed

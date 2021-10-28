@@ -1,15 +1,10 @@
 package com.example.githubuser
 
-import android.content.Context
 import android.os.Bundle
-import android.view.Menu
 import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
-import androidx.datastore.core.DataStore
-import androidx.datastore.preferences.core.Preferences
-import androidx.datastore.preferences.preferencesDataStore
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.example.githubuser.databinding.ActivityMainBinding
@@ -46,8 +41,12 @@ class MainActivity : AppCompatActivity() {
 
     fun appbarState(visible: Int) {
         when (visible) {
-            View.VISIBLE -> { supportActionBar?.show() }
-            View.GONE -> { supportActionBar?.hide() }
+            View.VISIBLE -> {
+                supportActionBar?.show()
+            }
+            View.GONE -> {
+                supportActionBar?.hide()
+            }
         }
     }
 

@@ -2,10 +2,10 @@
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    style="@style/CardView.Default"
     android:layout_width="match_parent"
     android:layout_height="@dimen/container_two_line"
-    android:layout_marginBottom="@dimen/margin_padding_size_xxsmall"
-    style="@style/CardView.Default">
+    android:layout_marginBottom="@dimen/margin_padding_size_xxsmall">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"

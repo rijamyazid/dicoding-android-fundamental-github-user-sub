@@ -11,7 +11,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MainViewModel
-@Inject constructor(private val pref: MainPreferences): ViewModel() {
+@Inject constructor(private val pref: MainPreferences) : ViewModel() {
 
     fun getThemeSettings(): LiveData<Boolean> {
         return pref.getThemeSetting().asLiveData()

@@ -6,7 +6,6 @@ import com.example.githubuser.datasource.repository.FakeMainRepository
 import com.example.githubuser.util.DataConstant
 import com.example.githubuser.util.LiveDataTestUtil.getOrAwaitValue
 import com.example.githubuser.util.MainCoroutineRule
-import com.example.githubuser.util.NetworkConstant
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.junit.Assert
 import org.junit.Before
