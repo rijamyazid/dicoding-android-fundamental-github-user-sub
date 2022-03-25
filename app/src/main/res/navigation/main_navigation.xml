@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/homeFragment"
-        android:name="com.example.githubuser.view.ui.HomeFragment"
+        android:name="com.rmyfactory.githubuser.view.ui.HomeFragment"
         android:label="fragment_home"
         tools:layout="@layout/fragment_home">
         <action
@@ -19,16 +19,16 @@
     </fragment>
     <fragment
         android:id="@+id/detailFragment"
-        android:name="com.example.githubuser.view.ui.DetailFragment"
+        android:name="com.rmyfactory.githubuser.view.ui.DetailFragment"
         android:label="fragment_detail"
         tools:layout="@layout/fragment_detail">
         <argument
             android:name="userDetail"
-            app:argType="com.example.githubuser.datasource.local.model.UserModel" />
+            app:argType="com.rmyfactory.githubuser.datasource.local.model.UserModel" />
     </fragment>
     <fragment
         android:id="@+id/favoriteFragment"
-        android:name="com.example.githubuser.view.ui.FavoriteFragment"
+        android:name="com.rmyfactory.githubuser.view.ui.FavoriteFragment"
         android:label="fragment_favorite"
         tools:layout="@layout/fragment_favorite">
         <action
@@ -37,7 +37,7 @@
     </fragment>
     <fragment
         android:id="@+id/searchFragment"
-        android:name="com.example.githubuser.view.ui.SearchFragment"
+        android:name="com.rmyfactory.githubuser.view.ui.SearchFragment"
         android:label="fragment_search"
         tools:layout="@layout/fragment_search">
         <action
@@ -46,7 +46,7 @@
     </fragment>
     <fragment
         android:id="@+id/settingFragment"
-        android:name="com.example.githubuser.view.ui.SettingFragment"
+        android:name="com.rmyfactory.githubuser.view.ui.SettingFragment"
         android:label="fragment_setting"
         tools:layout="@layout/fragment_setting" />
 </navigation>

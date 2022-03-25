@@ -10,8 +10,11 @@ plugins {
 android {
     compileSdk 30
 
+    Properties properties = new Properties()
+    properties.load(project.rootProject.file("local.properties").newDataInputStream())
+
     defaultConfig {
-        applicationId "com.example.githubuser"
+        applicationId "com.rmyfactory.githubuser"
         minSdk 21
         targetSdk 30
         versionCode 1
@@ -24,14 +27,12 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-//            buildConfigField("String", "GITHUB_TOKEN", "\"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\"")
-            buildConfigField("String", "GITHUB_TOKEN", "\"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\"")
-            buildConfigField("String", "GITHUB_USER_AGENT", "\"rijamyazid\"")
+            buildConfigField("String", "GITHUB_TOKEN", "\"${properties.getProperty("apiKey", "")}\"")
+            buildConfigField("String", "GITHUB_USER_AGENT", "\"${properties.getProperty("gitUsername", "")}\"")
         }
         debug {
-//            buildConfigField("String", "GITHUB_TOKEN", "\"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\"")
-            buildConfigField("String", "GITHUB_TOKEN", "\"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\"")
-            buildConfigField("String", "GITHUB_USER_AGENT", "\"rijamyazid\"")
+            buildConfigField("String", "GITHUB_TOKEN", "\"${properties.getProperty("apiKey", "")}\"")
+            buildConfigField("String", "GITHUB_USER_AGENT", "\"${properties.getProperty("gitUsername", "")}\"")
         }
     }
     compileOptions {
