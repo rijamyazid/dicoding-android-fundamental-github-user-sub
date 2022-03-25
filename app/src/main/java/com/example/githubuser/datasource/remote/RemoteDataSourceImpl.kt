@@ -22,8 +22,11 @@ class RemoteDataSourceImpl
                 EspressoIdlingResource.increment()
                 testingLog("getUsers: Loading")
                 emit(LocalSealed.Loading(true))
+                testingLog("getUsers: After emit")
                 val userModel = ArrayList<UserModel>()
+                testingLog("getUsers: user model")
                 val getUsers = ApiConfig.getApiService().getUsers()
+                testingLog("getUsers: After data fetch: $getUsers")
                 when {
                     getUsers.isEmpty() -> {
                         testingLog("getUsers: Empty")
